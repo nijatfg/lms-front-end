@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import './ParticipationComponent.css'; // Import your CSS file
 
-const ParticipationComponent = ({ userId }) => {
+const ParticipationComponent = ({userId}) => {
     const [lessonDate, setLessonDate] = useState('');
     const [lessonDates, setLessonDates] = useState([]);
     const [students, setStudents] = useState([]);
@@ -41,6 +41,7 @@ const ParticipationComponent = ({ userId }) => {
                 },
             });
             const filteredStudents = response.data.filter(student => student.authorities.some(auth => auth.authority === 'STUDENT'));
+            console.log(response.data);
             setStudents(filteredStudents);
         } catch (error) {
             console.error('Error fetching students:', error);
@@ -109,10 +110,9 @@ const ParticipationComponent = ({ userId }) => {
             <div className="attendance-list">
                 {students.map((student) => (
                     <div key={student.id} className="attendance-item">
-                        <span>{student.username}</span>
+                        <span>{student.username}</span> <span>{student.group.name}</span>
                         <button onClick={() => markAttendance(lessonDate, student.id, true)}>Attend</button>
                         <button onClick={() => markAttendance(lessonDate, student.id, false)}>Absent</button>
-                        <span>{attendanceRecords.find(record => record.userId === student.id)?.attendance ? 'Present' : 'Absent'}</span>
                     </div>
                 ))}
             </div>
