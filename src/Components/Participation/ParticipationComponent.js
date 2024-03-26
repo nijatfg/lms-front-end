@@ -4,15 +4,33 @@ import './ParticipationComponent.css'; // Import your CSS file
 
 const ParticipationComponent = ({ userId }) => {
     const [lessonDate, setLessonDate] = useState('');
+    const [lessonDates, setLessonDates] = useState([]);
     const [students, setStudents] = useState([]);
     const [attendanceRecords, setAttendanceRecords] = useState([]);
 
     useEffect(() => {
-        const today = new Date().toISOString().slice(0, 10); // Get today's date
-        setLessonDate(today);
+        fetchLessonDates();
         fetchStudents();
-        // fetchAttendanceRecords();
     }, []);
+
+    const fetchLessonDates = async () => {
+        try {
+            const token = localStorage.getItem('jwtToken'); // Get JWT token from localStorage
+            const response = await axios.get('http://localhost:8080/api/v1/lessons', {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include JWT token in headers
+                },
+            });
+            setLessonDates(response.data.map(lesson => lesson.date)); // Extract lesson dates from response
+            // Set initial lesson date to the first date in the list
+            if (response.data.length > 0) {
+                setLessonDate(response.data[0].date);
+            }
+        } catch (error) {
+            console.error('Error fetching lesson dates:', error);
+        }
+    };
+
 
     const fetchStudents = async () => {
         try {
@@ -29,7 +47,7 @@ const ParticipationComponent = ({ userId }) => {
         }
     };
 
-    const markAttendance = async (studentId, isPresent) => {
+    const markAttendance = async (lessonDate, studentId, isPresent) => {
         try {
             const token = localStorage.getItem('jwtToken'); // Get JWT token from localStorage
 
@@ -40,8 +58,7 @@ const ParticipationComponent = ({ userId }) => {
                 },
             });
 
-            const lessonId = lessonResponse.data[0].id;
-            console.log(lessonResponse.data)// Assuming the API response contains the lesson ID
+            const lessonId = lessonResponse.data[0].id; // Assuming only one lesson is found for the given date
 
             // Mark attendance using the fetched lesson ID
             const attendanceResponse = await axios.post(
@@ -58,25 +75,44 @@ const ParticipationComponent = ({ userId }) => {
             );
 
             console.log('Attendance marked:', attendanceResponse.data);
-            // fetchAttendanceRecords();
+
+            // Update attendance records
+            setAttendanceRecords(prevState => {
+                const updatedRecords = prevState.map(record => {
+                    if (record.userId === studentId) {
+                        return {
+                            ...record,
+                            attendance: isPresent,
+                        };
+                    }
+                    return record;
+                });
+                return updatedRecords;
+            });
         } catch (error) {
             console.error('Error marking attendance:', error);
         }
     };
 
+
     return (
         <div className="participation-container">
             <h2 className="participation-header">Participation</h2>
-            <div className="lesson-date">Today's Lesson Date: {lessonDate}</div>
+            <div className="lesson-date">
+                <label htmlFor="lessonDateSelect">Select Lesson Date:</label>
+                <select id="lessonDateSelect" value={lessonDate} onChange={(e) => setLessonDate(e.target.value)}>
+                    {lessonDates.map((date) => (
+                        <option key={date} value={date}>{date}</option>
+                    ))}
+                </select>
+            </div>
             <div className="attendance-list">
                 {students.map((student) => (
                     <div key={student.id} className="attendance-item">
                         <span>{student.username}</span>
-                        <input
-                            type="checkbox"
-                            checked={attendanceRecords.some((record) => record.userId === student.id)}
-                            onChange={(e) => markAttendance(student.id, e.target.checked)}
-                        />
+                        <button onClick={() => markAttendance(lessonDate, student.id, true)}>Attend</button>
+                        <button onClick={() => markAttendance(lessonDate, student.id, false)}>Absent</button>
+                        <span>{attendanceRecords.find(record => record.userId === student.id)?.attendance ? 'Present' : 'Absent'}</span>
                     </div>
                 ))}
             </div>

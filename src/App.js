@@ -5,8 +5,9 @@ import Profile from "./Components/Profile/Profile";
 import Login from "./Components/Login/Login";
 import Register from "./Components/Register/Register";
 import ParticipationComponent from "./Components/Participation/ParticipationComponent";
-import TeacherPage from "./Components/StudentPage/TeacherPage";
+import TeacherPage from "./Components/TeacherPage/TeacherPage";
 import "./App.css";
+import StudentPage from "./Components/Student/StudentPage";
 
 function App() {
     const [userState, setUserState] = useState({});
@@ -55,6 +56,7 @@ function App() {
                         element={<ParticipationComponent userId={userState._id}/>}
                     />
                     <Route path="/teacher" element={<TeacherPage/>}/>
+                    <Route path="/student" element={<StudentPage/>}/>
                 </Routes>
             </Router>
         </div>

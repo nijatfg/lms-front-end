@@ -1,0 +1,16 @@
+/* ParticipationComponentStudent.css */
+
+.participation-container {
+    font-size: 14px; /* Adjust the font size to make it smaller */
+}
+
+ul {
+    list-style-type: none; /* Remove bullet points from the list */
+    padding: 0; /* Remove default padding */
+}
+
+li {
+    border: 1px solid #ccc; /* Add borders to each record */
+    margin-bottom: 5px; /* Add margin between records */
+    padding: 10px; /* Add padding inside each record */
+}

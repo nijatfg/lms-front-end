@@ -12,15 +12,15 @@ const UploadMaterialComponent = () => {
 
     useEffect(() => {
         fetchGroups();
-        fetchMaterials();// Fetch groups when the component mounts
+        fetchMaterials();
     }, []);
 
     const fetchGroups = async () => {
         try {
-            const token = localStorage.getItem('jwtToken'); // Get JWT token from localStorage
+            const token = localStorage.getItem('jwtToken');
             const response = await axios.get('http://localhost:8080/api/v1/groups', {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Include JWT token in headers
+                    Authorization: `Bearer ${token}`,
                 },
             });
             setGroups(response.data);
@@ -31,10 +31,10 @@ const UploadMaterialComponent = () => {
 
     const fetchMaterials = async () => {
         try {
-            const token = localStorage.getItem('jwtToken'); // Get JWT token from localStorage
+            const token = localStorage.getItem('jwtToken');
             const response = await axios.get('http://localhost:8080/api/v1/materials', {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Include JWT token in headers
+                    Authorization: `Bearer ${token}`,
                 },
             });
             setMaterials(response.data);
@@ -60,7 +60,7 @@ const UploadMaterialComponent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const token = localStorage.getItem('jwtToken'); // Get JWT token from localStorage
+        const token = localStorage.getItem('jwtToken');
 
         const formData = new FormData();
         formData.append('file', file);

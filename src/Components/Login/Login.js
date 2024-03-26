@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import basestyle from "../Base.module.css";
 import loginstyle from "./Login.module.css";
 import axios from "axios";
-import { useNavigate, NavLink } from "react-router-dom";
+import {useNavigate, NavLink} from "react-router-dom";
 
-const Login = ({ setUserState }) => {
+const Login = ({setUserState}) => {
     const navigate = useNavigate();
     const [formErrors, setFormErrors] = useState({});
     const [user, setUserDetails] = useState({
@@ -13,7 +13,7 @@ const Login = ({ setUserState }) => {
     });
 
     const changeHandler = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setUserDetails({
             ...user,
             [name]: value,
@@ -38,8 +38,10 @@ const Login = ({ setUserState }) => {
         e.preventDefault();
         try {
             const response = await axios.post("http://localhost:8080/api/auth/signin", user);
-            const { jwt } = response.data;
-            localStorage.setItem("jwtToken", jwt); // Store JWT token in localStorage
+            const {jwt} = response.data;
+            console.log(response.data);
+            localStorage.setItem("jwtToken", jwt);
+            localStorage.setItem("userId", response.data.id);
             // Set Axios Authorization header for subsequent requests
             axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
             setUserState(jwt);
@@ -48,8 +50,7 @@ const Login = ({ setUserState }) => {
                 navigate("/student")
             } else if (response.data.authorities[0].authority === "TEACHER") {
                 navigate("/teacher")
-            }
-            else {
+            } else {
                 navigate("/dashboard");
             }
             setTimeout(() => {
@@ -60,9 +61,9 @@ const Login = ({ setUserState }) => {
         } catch (error) {
             console.error("Login error:", error);
             if (error.response && error.response.status === 401) {
-                setFormErrors({ message: "Invalid email or password" });
+                setFormErrors({message: "Invalid email or password"});
             } else {
-                setFormErrors({ message: "An error occurred. Please try again later." });
+                setFormErrors({message: "An error occurred. Please try again later."});
             }
         }
     };
