@@ -6,6 +6,7 @@ const ParticipationComponentStudent = () => {
     const [participationRecords, setParticipationRecords] = useState([]);
     const [participationPercentage, setParticipationPercentage] = useState(null);
     const userId = localStorage.getItem('userId');
+    const groupId = localStorage.getItem('groupId'); // Assuming groupId is set during login
     const token = localStorage.getItem('jwtToken');
 
     useEffect(() => {
@@ -15,7 +16,7 @@ const ParticipationComponentStudent = () => {
 
     const fetchParticipationRecords = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/v1/participation/participationRecords/${userId}`, {
+            const response = await axios.get(`http://localhost:8080/api/v1/participation/groups/${groupId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

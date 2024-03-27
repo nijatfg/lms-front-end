@@ -3,38 +3,32 @@ import axios from 'axios';
 
 const ManageAssignments = () => {
     const [assignments, setAssignments] = useState([]);
-    const [groups, setGroups] = useState([]);
     const [selectedGroupId, setSelectedGroupId] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState('');
     const [submissionRequirements, setSubmissionRequirements] = useState('');
+    const groupId = localStorage.getItem('groupId');
 
     useEffect(() => {
-        fetchAssignments();
-        fetchGroups();
+
+        if (groupId) {
+            setSelectedGroupId(groupId);
+        }
+        fetchAssignments(groupId); // Fetch assignments for the specific group
     }, []);
 
     const fetchAssignments = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/v1/assignments');
+            const token = localStorage.getItem('jwtToken'); // Get JWT token from localStorage
+            const response = await axios.get(`http://localhost:8080/api/v1/assignments/groups/${groupId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include JWT token in headers
+                },
+            });
             setAssignments(response.data);
         } catch (error) {
             console.error('Error fetching assignments:', error);
-        }
-    };
-
-    const fetchGroups = async () => {
-        try {
-            const token = localStorage.getItem('jwtToken');
-            const response = await axios.get('http://localhost:8080/api/v1/groups', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setGroups(response.data);
-        } catch (error) {
-            console.error('Error fetching groups:', error);
         }
     };
 
@@ -52,7 +46,7 @@ const ManageAssignments = () => {
                 },
             });
             console.log('Assignment created:', response.data);
-            fetchAssignments(); // Refresh assignments list after creating a new assignment
+            fetchAssignments(selectedGroupId); // Refresh assignments list for the selected group
         } catch (error) {
             console.error('Error creating assignment:', error);
         }
@@ -81,9 +75,7 @@ const ManageAssignments = () => {
                 <label>Select Group:</label>
                 <select value={selectedGroupId} onChange={(e) => setSelectedGroupId(e.target.value)}>
                     <option value="">Select a Group</option>
-                    {groups.map(group => (
-                        <option key={group.id} value={group.id}>{group.name}</option>
-                    ))}
+                    {/* You can add your groups here */}
                 </select>
             </div>
             <button onClick={handleCreateAssignment}>Create Assignment</button>

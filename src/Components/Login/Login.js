@@ -42,6 +42,7 @@ const Login = ({setUserState}) => {
             console.log(response.data);
             localStorage.setItem("jwtToken", jwt);
             localStorage.setItem("userId", response.data.id);
+            localStorage.setItem("groupId", response.data.group.id)
             // Set Axios Authorization header for subsequent requests
             axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
             setUserState(jwt);

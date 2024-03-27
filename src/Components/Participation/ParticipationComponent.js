@@ -7,6 +7,7 @@ const ParticipationComponent = ({userId}) => {
     const [lessonDates, setLessonDates] = useState([]);
     const [students, setStudents] = useState([]);
     const [attendanceRecords, setAttendanceRecords] = useState([]);
+    const groupId = localStorage.getItem("groupId");
 
     useEffect(() => {
         fetchLessonDates();
@@ -31,11 +32,10 @@ const ParticipationComponent = ({userId}) => {
         }
     };
 
-
     const fetchStudents = async () => {
         try {
             const token = localStorage.getItem('jwtToken'); // Get JWT token from localStorage
-            const response = await axios.get('http://localhost:8080/api/v1/users', {
+            const response = await axios.get(`http://localhost:8080/api/v1/users/groups/${groupId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`, // Include JWT token in headers
                 },
@@ -61,9 +61,12 @@ const ParticipationComponent = ({userId}) => {
 
             const lessonId = lessonResponse.data[0].id; // Assuming only one lesson is found for the given date
 
-            // Mark attendance using the fetched lesson ID
+            // Fetch groupId from localStorage
+            const groupId = localStorage.getItem('groupId');
+
+            // Mark attendance using the fetched lesson ID and groupId
             const attendanceResponse = await axios.post(
-                `http://localhost:8080/api/v1/participation/markAttendance/${lessonId}/${studentId}`,
+                `http://localhost:8080/api/v1/participation/markAttendance/${lessonId}/${studentId}/${groupId}`,
                 {
                     lessonDate: lessonDate,
                     attendance: isPresent,
@@ -94,7 +97,6 @@ const ParticipationComponent = ({userId}) => {
             console.error('Error marking attendance:', error);
         }
     };
-
 
     return (
         <div className="participation-container">
