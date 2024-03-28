@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import AdminDashboard from "./Components/AdminDashboard/AdminDashboard";
 import Profile from "./Components/Profile/Profile";
 import Login from "./Components/Login/Login";
@@ -8,6 +8,7 @@ import ParticipationComponent from "./Components/Participation/ParticipationComp
 import TeacherPage from "./Components/TeacherPage/TeacherPage";
 import "./App.css";
 import StudentPage from "./Components/Student/StudentPage";
+import SubmitAssignmentComponent from "./Components/Submission/SubmitAssignmentComponent";// Import SubmitAssignmentComponent
 
 function App() {
     const [userState, setUserState] = useState({});
@@ -57,6 +58,8 @@ function App() {
                     />
                     <Route path="/teacher" element={<TeacherPage/>}/>
                     <Route path="/student" element={<StudentPage/>}/>
+                    {/* Add new route for SubmitAssignmentComponent */}
+                    <Route path="/submit-assignment" element={<SubmitAssignmentComponent/>}></Route>
                 </Routes>
             </Router>
         </div>
