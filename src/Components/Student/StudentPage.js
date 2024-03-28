@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {Container, Nav, Navbar} from 'react-bootstrap';
 import ParticipationComponentStudent from "../Participation/ParticipationComponentStudent";
+import GetMaterialComponent from "../Material/GetMaterialComponent";
+import ViewAssignments from "../Assignment/ViewAssignments";
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('users'); // State to track active tab
@@ -17,11 +19,17 @@ const AdminDashboard = () => {
                     <Nav className="">
                         <Nav.Link onClick={() => handleTabChange('participationsStudent')}
                                   className={activeTab === 'participationsStudent' ? 'active' : ''}>Participation</Nav.Link>
+                        <Nav.Link onClick={() => handleTabChange('getMaterials')}
+                                  className={activeTab === 'getMaterials' ? 'active' : ''}>Materials</Nav.Link>
+                        <Nav.Link onClick={() => handleTabChange('assignments')}
+                                  className={activeTab === 'assignments' ? 'active' : ''}>Assignments</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
             <Container className="dashboard-content">
                 {activeTab === 'participationsStudent' && <ParticipationComponentStudent/>}
+                {activeTab === 'getMaterials' && <GetMaterialComponent/>}
+                {activeTab === 'assignments' && <ViewAssignments/>}
             </Container>
         </>
     );
