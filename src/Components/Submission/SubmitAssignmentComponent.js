@@ -3,12 +3,12 @@ import axios from 'axios';
 
 const SubmitAssignmentComponent = () => {
     const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
     const [submissionType, setSubmissionType] = useState('link'); // Default to 'link'
     const [submissionValue, setSubmissionValue] = useState(''); // Value for link or file
     const [file, setFile] = useState(null);
     const [submissions, setSubmissions] = useState([]); // State for storing submissions
     const assignmentId = localStorage.getItem("assignmentId");
+    const groupId = localStorage.getItem("groupId");
     const userId = localStorage.getItem("userId");
 
     useEffect(() => {
@@ -18,7 +18,7 @@ const SubmitAssignmentComponent = () => {
     const fetchSubmissions = async () => {
         try {
             const token = localStorage.getItem('jwtToken');
-            const response = await axios.get(`http://localhost:8080/api/v1/submissions/assignment/${assignmentId}/submissions`, {
+            const response = await axios.get(`http://localhost:8080/api/v1/submissions/assignment/${assignmentId}/groups/${groupId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -29,6 +29,7 @@ const SubmitAssignmentComponent = () => {
                 downloadUrl: `http://localhost:8080/api/v1/submissions/download/${submission.content}`,
             }));
             setSubmissions(submissionsWithDownload);
+            console.log(response.data);
         } catch (error) {
             console.error('Error fetching submissions:', error);
         }
@@ -39,7 +40,6 @@ const SubmitAssignmentComponent = () => {
 
         const formData = new FormData();
         formData.append('title', title);
-        formData.append('description', description);
 
         if (submissionType === 'link') {
             formData.append('link', submissionValue);
@@ -49,7 +49,7 @@ const SubmitAssignmentComponent = () => {
 
         try {
             const token = localStorage.getItem('jwtToken');
-            const response = await axios.post(`http://localhost:8080/api/v1/submissions/submit/${assignmentId}/${userId}`, formData, {
+            const response = await axios.post(`http://localhost:8080/api/v1/submissions/submit/${assignmentId}/${userId}/${groupId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,
@@ -58,7 +58,6 @@ const SubmitAssignmentComponent = () => {
             console.log('Submission successful:', response.data);
             // Clear form fields after successful submission
             setTitle('');
-            setDescription('');
             setSubmissionValue('');
             setFile(null);
             // Fetch updated submissions after successful submission
@@ -74,11 +73,7 @@ const SubmitAssignmentComponent = () => {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Title:</label>
-                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-                </div>
-                <div>
-                    <label>Description:</label>
-                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
+                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required/>
                 </div>
                 <div>
                     <label>Submission Type:</label>
@@ -90,12 +85,12 @@ const SubmitAssignmentComponent = () => {
                 {submissionType === 'link' ? (
                     <div>
                         <label>Link:</label>
-                        <input type="text" value={submissionValue} onChange={(e) => setSubmissionValue(e.target.value)} />
+                        <input type="text" value={submissionValue} onChange={(e) => setSubmissionValue(e.target.value)}/>
                     </div>
                 ) : (
                     <div>
                         <label>File:</label>
-                        <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+                        <input type="file" onChange={(e) => setFile(e.target.files[0])}/>
                     </div>
                 )}
                 <button type="submit">Submit</button>
@@ -108,7 +103,6 @@ const SubmitAssignmentComponent = () => {
                             {/* Display submission details */}
                             <p>Content: <a href={submission.downloadUrl} download>{submission.content}</a></p>
                             <p>Link: {submission.link}</p>
-                            <p>Description: {submission.description}</p>
                         </li>
                     ))}
                 </ul>
