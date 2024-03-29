@@ -3,6 +3,7 @@ import {Container, Nav, Navbar} from 'react-bootstrap';
 import ParticipationComponent from "../Participation/ParticipationComponent";
 import UploadMaterialComponent from "../Material/UploadMaterialComponent";
 import ManageAssignments from "../Assignment/ManageAssignments";
+import TaskSubmission from "../Submission/TaskSubmission";
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('users'); // State to track active tab
@@ -23,6 +24,8 @@ const AdminDashboard = () => {
                                   className={activeTab === 'materials' ? 'active' : ''}>Materials</Nav.Link>
                         <Nav.Link onClick={() => handleTabChange('assignments')}
                                   className={activeTab === 'assignments' ? 'active' : ''}>Assignments</Nav.Link>
+                        <Nav.Link onClick={() => handleTabChange('submissions')}
+                                  className={activeTab === 'submissions' ? 'active' : ''}>Submissions</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
@@ -30,6 +33,7 @@ const AdminDashboard = () => {
                 {activeTab === 'participations' && <ParticipationComponent/>}
                 {activeTab === 'materials' && <UploadMaterialComponent/>}
                 {activeTab === 'assignments' && <ManageAssignments/>}
+                {activeTab === 'submissions' && <TaskSubmission/>}
             </Container>
         </>
     );
