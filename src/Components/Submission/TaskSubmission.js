@@ -34,10 +34,31 @@ const TaskSubmission = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(response.data);
             setSubmissions(response.data);
         } catch (error) {
             console.error('Error fetching submissions:', error);
+        }
+    };
+
+    const handleDownload = async (fileName) => {
+        try {
+            const token = localStorage.getItem('jwtToken');
+            const response = await axios.get(`http://localhost:8080/api/v1/submissions/download/${fileName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                responseType: 'blob', // Specify response type as blob
+            });
+            // Create a blob URL for the file and open it in a new window
+            const blobUrl = URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error downloading file:', error);
         }
     };
 
@@ -55,14 +76,17 @@ const TaskSubmission = () => {
                             <div>
                                 <h4>Submissions</h4>
                                 <ul>
-                                    {submissions// Assuming taskId is the property to match with task ID
-                                        .map(submission => (
-                                            <li key={submission.id}>
-                                                <p>Content: {submission.content}</p>
-                                                <p>Link: {submission.link}</p>
-                                                <p>User: {submission.user.username}</p>
-                                            </li>
-                                        ))}
+                                    {submissions.map(submission => (
+                                        <li key={submission.id}>
+                                            <p>Content: {submission.content}</p>
+                                            <p>Link: {submission.link}</p>
+                                            <p>User: {submission.user.username}</p>
+                                            {/* Add download functionality to content */}
+                                            <p onClick={() => handleDownload(submission.content)} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>
+                                                {submission.content}
+                                            </p>
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                         </li>

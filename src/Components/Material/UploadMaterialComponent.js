@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 
 const UploadMaterialComponent = () => {
@@ -47,13 +47,25 @@ const UploadMaterialComponent = () => {
         }
     };
 
-    const renderContent = (material) => {
-        if (material.type.includes('image')) {
-            return <img src={`http://localhost:8080/api/v1/materials/download/${material.content}`} alt={material.title} />;
-        } else if (material.type.includes('pdf')) {
-            return <embed src={`http://localhost:8080/api/v1/materials/download/${material.content}`} type="application/pdf" />;
-        } else {
-            return <a href={`http://localhost:8080/api/v1/materials/download/${material.content}`} download>{material.title}</a>;
+    const handleDownload = async (fileName) => {
+        try {
+            const token = localStorage.getItem('jwtToken');
+            const response = await axios.get(`http://localhost:8080/api/v1/materials/download/${fileName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                responseType: 'blob', // Specify response type as blob
+            });
+            // Create a blob URL for the file and open it in a new window
+            const blobUrl = URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error downloading file:', error);
         }
     };
 
@@ -94,22 +106,22 @@ const UploadMaterialComponent = () => {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Title:</label>
-                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required/>
                 </div>
                 <div>
                     <label>Type:</label>
-                    <input type="text" value={type} onChange={(e) => setType(e.target.value)} required />
+                    <input type="text" value={type} onChange={(e) => setType(e.target.value)} required/>
                 </div>
                 <div>
                     <label>Content:</label>
-                    <input type="text" value={content} onChange={(e) => setContent(e.target.value)} required />
+                    <input type="text" value={content} onChange={(e) => setContent(e.target.value)} required/>
                 </div>
                 <div>
-                    <input type="hidden" value={groupId} />
+                    <input type="hidden" value={groupId}/>
                 </div>
                 <div>
                     <label>File:</label>
-                    <input type="file" onChange={(e) => setFile(e.target.files[0])} required />
+                    <input type="file" onChange={(e) => setFile(e.target.files[0])} required/>
                 </div>
                 <button type="submit">Upload</button>
             </form>
@@ -120,8 +132,12 @@ const UploadMaterialComponent = () => {
                     <li key={material.id}>
                         <strong>Title: {material.title}</strong>
                         <p>Type: {material.type}</p>
-                        <p>Content: {renderContent(material)}</p>
+                        <p>Content: {material.content}</p>
                         <p>Group ID: {material.groupId}</p>
+                        <p onClick={() => handleDownload(material.content)}
+                           style={{cursor: 'pointer', color: 'blue', textDecoration: 'underline'}}>
+                            {material.content}
+                        </p>
                         {/* Add more details as needed */}
                     </li>
                 ))}

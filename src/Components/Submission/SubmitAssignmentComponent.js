@@ -18,20 +18,37 @@ const SubmitAssignmentComponent = () => {
     const fetchSubmissions = async () => {
         try {
             const token = localStorage.getItem('jwtToken');
-            const response = await axios.get(`http://localhost:8080/api/v1/submissions/assignment/${assignmentId}/groups/${groupId}`, {
+            const response = await axios.get(`http://localhost:8080/api/v1/submissions/assignment/${assignmentId}/groups/${groupId}/users/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            // Update the submission data to include the file name for download
-            const submissionsWithDownload = response.data.map(submission => ({
-                ...submission,
-                downloadUrl: `http://localhost:8080/api/v1/submissions/download/${submission.content}`,
-            }));
-            setSubmissions(submissionsWithDownload);
+            setSubmissions(response.data);
             console.log(response.data);
         } catch (error) {
             console.error('Error fetching submissions:', error);
+        }
+    };
+
+    const handleDownload = async (fileName) => {
+        try {
+            const token = localStorage.getItem('jwtToken');
+            const response = await axios.get(`http://localhost:8080/api/v1/submissions/download/${fileName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                responseType: 'blob', // Specify response type as blob
+            });
+            // Create a blob URL for the file and open it in a new window
+            const blobUrl = URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error downloading file:', error);
         }
     };
 
@@ -101,8 +118,12 @@ const SubmitAssignmentComponent = () => {
                     {submissions.map(submission => (
                         <li key={submission.id}>
                             {/* Display submission details */}
-                            <p>Content: <a href={submission.downloadUrl} download>{submission.content}</a></p>
+                            <p>Content: {submission.content}</p>
                             <p>Link: {submission.link}</p>
+                            <p onClick={() => handleDownload(submission.content)}
+                               style={{cursor: 'pointer', color: 'blue', textDecoration: 'underline'}}>
+                                {submission.content}
+                            </p>
                         </li>
                     ))}
                 </ul>

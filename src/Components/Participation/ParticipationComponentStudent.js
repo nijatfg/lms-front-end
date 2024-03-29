@@ -16,7 +16,7 @@ const ParticipationComponentStudent = () => {
 
     const fetchParticipationRecords = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/v1/participation/groups/${groupId}`, {
+            const response = await axios.get(`http://localhost:8080/api/v1/participation/participationRecords/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
