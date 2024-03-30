@@ -3,6 +3,7 @@ import {Container, Nav, Navbar} from 'react-bootstrap';
 import ParticipationComponentStudent from "../Participation/ParticipationComponentStudent";
 import GetMaterialComponent from "../Material/GetMaterialComponent";
 import ViewAssignments from "../Assignment/ViewAssignments";
+import ViewGroupUsers from "../Group/ViewGroupUsers";
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('users'); // State to track active tab
@@ -23,6 +24,8 @@ const AdminDashboard = () => {
                                   className={activeTab === 'getMaterials' ? 'active' : ''}>Materials</Nav.Link>
                         <Nav.Link onClick={() => handleTabChange('assignments')}
                                   className={activeTab === 'assignments' ? 'active' : ''}>Assignments</Nav.Link>
+                        <Nav.Link onClick={() => handleTabChange('groups')}
+                                  className={activeTab === 'groups' ? 'active' : ''}>Group</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
@@ -30,6 +33,7 @@ const AdminDashboard = () => {
                 {activeTab === 'participationsStudent' && <ParticipationComponentStudent/>}
                 {activeTab === 'getMaterials' && <GetMaterialComponent/>}
                 {activeTab === 'assignments' && <ViewAssignments/>}
+                {activeTab === 'groups' && <ViewGroupUsers/>}
             </Container>
         </>
     );

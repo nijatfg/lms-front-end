@@ -4,6 +4,7 @@ import ParticipationComponent from "../Participation/ParticipationComponent";
 import UploadMaterialComponent from "../Material/UploadMaterialComponent";
 import ManageAssignments from "../Assignment/ManageAssignments";
 import TaskSubmission from "../Submission/TaskSubmission";
+import ViewGroupUsers from "../Group/ViewGroupUsers";
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('users'); // State to track active tab
@@ -26,6 +27,8 @@ const AdminDashboard = () => {
                                   className={activeTab === 'assignments' ? 'active' : ''}>Assignments</Nav.Link>
                         <Nav.Link onClick={() => handleTabChange('submissions')}
                                   className={activeTab === 'submissions' ? 'active' : ''}>Submissions</Nav.Link>
+                        <Nav.Link onClick={() => handleTabChange('groups')}
+                                  className={activeTab === 'groups' ? 'active' : ''}>Group</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
@@ -34,6 +37,7 @@ const AdminDashboard = () => {
                 {activeTab === 'materials' && <UploadMaterialComponent/>}
                 {activeTab === 'assignments' && <ManageAssignments/>}
                 {activeTab === 'submissions' && <TaskSubmission/>}
+                {activeTab === 'groups' && <ViewGroupUsers/>}
             </Container>
         </>
     );
