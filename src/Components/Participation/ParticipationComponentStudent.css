@@ -1,16 +1,20 @@
-/* ParticipationComponentStudent.css */
-
 .participation-container {
-    font-size: 14px; /* Adjust the font size to make it smaller */
+    font-size: 14px; /* Adjust the font size */
 }
 
-ul {
-    list-style-type: none; /* Remove bullet points from the list */
-    padding: 0; /* Remove default padding */
+/* Table styles */
+.participation-table {
+    border-collapse: collapse; /* Ensure a single border for cells */
+    border: 1px solid #ccc; /* Add a border around the table (optional) */
+    width: 100%; /* Set width to 100% for full responsiveness */
 }
 
-li {
-    border: 1px solid #ccc; /* Add borders to each record */
-    margin-bottom: 5px; /* Add margin between records */
-    padding: 10px; /* Add padding inside each record */
+.participation-table th,
+.participation-table td {
+    padding: 10px; /* Add padding to table cells */
+    text-align: left; /* Align text to the left */
+}
+
+.participation-table th {
+    /*background-color: #f2f2f*/
 }

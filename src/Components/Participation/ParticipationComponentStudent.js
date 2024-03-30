@@ -55,9 +55,9 @@ const ParticipationComponentStudent = () => {
                 <tbody>
                 {participationRecords.map((record) => (
                     <tr key={record.id}>
-                        <td>{record.id}</td>
-                        <td>{record.attendance ? 'Present' : 'Absent'}</td>
-                        <td>{record.lesson.date}</td>
+                        <td className="participation-table__cell">{record.id}</td>
+                        <td className="participation-table__cell">{record.attendance ? 'Present' : 'Absent'}</td>
+                        <td className="participation-table__cell">{record.lesson.date}</td>
                     </tr>
                 ))}
                 </tbody>
