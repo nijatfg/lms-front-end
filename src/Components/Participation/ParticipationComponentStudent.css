@@ -1,20 +1,40 @@
 .participation-container {
-    font-size: 14px; /* Adjust the font size */
+    font-size: 14px;
 }
 
-/* Table styles */
-.participation-table {
-    border-collapse: collapse; /* Ensure a single border for cells */
-    border: 1px solid #ccc; /* Add a border around the table (optional) */
-    width: 100%; /* Set width to 100% for full responsiveness */
+.participation-records {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.participation-table th,
-.participation-table td {
-    padding: 10px; /* Add padding to table cells */
-    text-align: left; /* Align text to the left */
+.participation-record {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: calc(50% - 10px); /* Adjust width for responsiveness */
 }
 
-.participation-table th {
-    /*background-color: #f2f2f*/
+.participation-date {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.present {
+    background-color: green;
+    color: white;
+}
+
+.absent {
+    background-color: red;
+    color: white;
 }

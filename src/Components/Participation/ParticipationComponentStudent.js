@@ -6,62 +6,48 @@ const ParticipationComponentStudent = () => {
     const [participationRecords, setParticipationRecords] = useState([]);
     const [participationPercentage, setParticipationPercentage] = useState(null);
     const userId = localStorage.getItem('userId');
-    const groupId = localStorage.getItem('groupId'); // Assuming groupId is set during login
     const token = localStorage.getItem('jwtToken');
 
     useEffect(() => {
-        fetchParticipationRecords();
-        fetchParticipationPercentage();
+        fetchParticipationData();
     }, []);
 
-    const fetchParticipationRecords = async () => {
+    const fetchParticipationData = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/v1/participation/participationRecords/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            console.log(response.data);
-            setParticipationRecords(response.data);
-        } catch (error) {
-            console.error('Error fetching participation records:', error);
-        }
-    };
+            const [recordsResponse, percentageResponse] = await Promise.all([
+                axios.get(`http://localhost:8080/api/v1/participation/participationRecords/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }),
+                axios.get(`http://localhost:8080/api/v1/participation/calculatePercentage/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }),
+            ]);
 
-    const fetchParticipationPercentage = async () => {
-        try {
-            const response = await axios.get(`http://localhost:8080/api/v1/participation/calculatePercentage/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setParticipationPercentage(response.data);
+            console.log(recordsResponse.data);
+            setParticipationRecords(recordsResponse.data);
+            setParticipationPercentage(percentageResponse.data);
         } catch (error) {
-            console.error('Error calculating participation percentage:', error);
+            console.error('Error fetching participation data:', error);
         }
     };
 
     return (
         <div className="participation-container">
             <h2>Participation Records</h2>
-            <table className="participation-table">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Attendance</th>
-                    <th>Lesson Date</th>
-                </tr>
-                </thead>
-                <tbody>
+            <div className="participation-records">
                 {participationRecords.map((record) => (
-                    <tr key={record.id}>
-                        <td className="participation-table__cell">{record.id}</td>
-                        <td className="participation-table__cell">{record.attendance ? 'Present' : 'Absent'}</td>
-                        <td className="participation-table__cell">{record.lesson.date}</td>
-                    </tr>
+                    <div className="participation-record" key={record.id}>
+                        <div className="participation-date">{record.lesson.date}</div>
+                        <div className={`status ${record.attendance ? 'present' : 'absent'}`}>
+                            {record.attendance ? 'Present' : 'Absent'}
+                        </div>
+                    </div>
                 ))}
-                </tbody>
-            </table>
+            </div>
             <h2>Participation Percentage: {participationPercentage !== null ? `${participationPercentage}%` : 'Loading...'}</h2>
         </div>
     );
