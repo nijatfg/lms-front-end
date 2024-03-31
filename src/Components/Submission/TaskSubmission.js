@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import GradeSubmission from "../Grade/GradeSubmission";// Assuming GradeSubmission is a separate component for grading
 
 const TaskSubmission = () => {
     const [assignments, setAssignments] = useState([]);
     const [submissions, setSubmissions] = useState([]);
     const assignmentId = localStorage.getItem('assignmentId');
     const groupId = localStorage.getItem('groupId');
+    const [selectedSubmission, setSelectedSubmission] = useState(null);
+    const [gradeData, setGradeData] = useState({ score: 0, feedback: '' });
 
     useEffect(() => {
         fetchTasks();
@@ -62,8 +65,17 @@ const TaskSubmission = () => {
         }
     };
 
+    const handleGradeSubmission = (submissionId) => {
+        setSelectedSubmission(submissionId);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setGradeData({ ...gradeData, [name]: value });
+    };
+
     return (
-        <div>
+        <div style={{ position: 'relative' }}>
             <h2>Tasks and Submissions</h2>
             <div>
                 <h3>Tasks</h3>
@@ -85,6 +97,8 @@ const TaskSubmission = () => {
                                             <p onClick={() => handleDownload(submission.content)} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>
                                                 {submission.content}
                                             </p>
+                                            {/* Add grade button */}
+                                            <button onClick={() => handleGradeSubmission(submission.id)}>Grade</button>
                                         </li>
                                     ))}
                                 </ul>
@@ -93,6 +107,12 @@ const TaskSubmission = () => {
                     ))}
                 </ul>
             </div>
+            {/* Render GradeSubmission component conditionally */}
+            {selectedSubmission && (
+                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', background: 'white', zIndex: 9999 }}>
+                    <GradeSubmission submissionId={selectedSubmission} handleInputChange={handleInputChange} gradeData={gradeData} />
+                </div>
+            )}
         </div>
     );
 };
