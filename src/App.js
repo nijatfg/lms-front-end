@@ -9,6 +9,10 @@ import TeacherPage from "./Components/TeacherPage/TeacherPage";
 import "./App.css";
 import StudentPage from "./Components/Student/StudentPage";
 import SubmitAssignmentComponent from "./Components/Submission/SubmitAssignmentComponent";// Import SubmitAssignmentComponent
+import ManageCourse from "./Components/Course/ManageCourse";
+import ManageUsers from "./Components/User/ManageUsers";
+import ManageGroup from "./Components/Group/ManageGroup";
+import ManageLessons from "./Components/Lesson/ManageLessons";
 
 function App() {
     const [userState, setUserState] = useState({});
@@ -60,6 +64,10 @@ function App() {
                     <Route path="/student" element={<StudentPage/>}/>
                     {/* Add new route for SubmitAssignmentComponent */}
                     <Route path="/submit-assignment" element={<SubmitAssignmentComponent/>}></Route>
+                    <Route path="/dashboard/users" element={<ManageUsers/>}></Route>
+                    <Route path="/dashboard/courses" element={<ManageCourse/>}></Route>
+                    <Route path="/dashboard/groups" element={<ManageGroup/>}></Route>
+                    <Route path="/dashboard/lessons" element={<ManageLessons/>}></Route>
                 </Routes>
             </Router>
         </div>
