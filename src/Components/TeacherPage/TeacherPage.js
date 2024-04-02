@@ -5,6 +5,7 @@ import UploadMaterialComponent from "../Material/UploadMaterialComponent";
 import ManageAssignments from "../Assignment/ManageAssignments";
 import TaskSubmission from "../Submission/TaskSubmission";
 import ViewGroupUsers from "../Group/ViewGroupUsers";
+import ChatRoom from "../Chat/ChatRoom";
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('users'); // State to track active tab
@@ -29,6 +30,8 @@ const AdminDashboard = () => {
                                   className={activeTab === 'submissions' ? 'active' : ''}>Submissions</Nav.Link>
                         <Nav.Link onClick={() => handleTabChange('groups')}
                                   className={activeTab === 'groups' ? 'active' : ''}>Group</Nav.Link>
+                        <Nav.Link onClick={() => handleTabChange('chat')}
+                                  className={activeTab === 'chat' ? 'active' : ''}>Chat</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
@@ -38,6 +41,7 @@ const AdminDashboard = () => {
                 {activeTab === 'assignments' && <ManageAssignments/>}
                 {activeTab === 'submissions' && <TaskSubmission/>}
                 {activeTab === 'groups' && <ViewGroupUsers/>}
+                {activeTab === 'chat' && <ChatRoom/>}
             </Container>
         </>
     );

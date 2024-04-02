@@ -4,6 +4,7 @@ import ParticipationComponentStudent from "../Participation/ParticipationCompone
 import GetMaterialComponent from "../Material/GetMaterialComponent";
 import ViewAssignments from "../Assignment/ViewAssignments";
 import ViewGroupUsers from "../Group/ViewGroupUsers";
+import ChatRoom from "../Chat/ChatRoom";
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('users'); // State to track active tab
@@ -26,6 +27,8 @@ const AdminDashboard = () => {
                                   className={activeTab === 'assignments' ? 'active' : ''}>Assignments</Nav.Link>
                         <Nav.Link onClick={() => handleTabChange('groups')}
                                   className={activeTab === 'groups' ? 'active' : ''}>Group</Nav.Link>
+                        <Nav.Link onClick={() => handleTabChange('chat')}
+                                  className={activeTab === 'chat' ? 'active' : ''}>Chat</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
@@ -34,6 +37,7 @@ const AdminDashboard = () => {
                 {activeTab === 'getMaterials' && <GetMaterialComponent/>}
                 {activeTab === 'assignments' && <ViewAssignments/>}
                 {activeTab === 'groups' && <ViewGroupUsers/>}
+                {activeTab === 'chat' && <ChatRoom/>}
             </Container>
         </>
     );
