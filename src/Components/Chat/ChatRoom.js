@@ -1,189 +1,92 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
+import { over } from 'stompjs';
 import axios from 'axios';
 
 const ChatRoom = () => {
-    const [privateChats, setPrivateChats] = useState(new Map());
-    const [publicChats, setPublicChats] = useState([]);
-    const [tab, setTab] = useState("CHATROOM");
-    const [userData, setUserData] = useState({
-        username: '',
-        receivername: '',
-        connected: false,
-        message: ''
-    });
+    const [stompClient, setStompClient] = useState(null);
+    const [userData, setUserData] = useState({ username: '', connected: false, message: '' });
     const [allUsers, setAllUsers] = useState([]);
-    let stompClient = null;
+    const [messages, setMessages] = useState([]);
+    const [selectedUser, setSelectedUser] = useState('');
 
     useEffect(() => {
-        const token = localStorage.getItem("jwtToken");
-        if (token) {
-            registerUser(token);
-        }
+        const fetchData = async () => {
+            const token = localStorage.getItem('jwtToken');
+            if (token) {
+                try {
+                    const userId = localStorage.getItem('userId');
+                    const userResponse = await axios.get(`http://localhost:8080/api/v1/users/${userId}`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    });
+                    const usersResponse = await axios.get('http://localhost:8080/api/v1/users', {
+                        headers: { Authorization: `Bearer ${token}` },
+                    });
+                    const currentUser = userResponse.data;
+                    const allUsersData = usersResponse.data;
+                    setUserData({ ...userData, username: currentUser.username });
+                    setAllUsers(allUsersData);
+                    connect();
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            }
+        };
+        fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const connect = () => {
         const socket = new SockJS('http://localhost:8080/ws');
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, onConnected, onError);
+        const client = over(socket);
+        client.connect({}, () => {
+            setStompClient(client);
+            setUserData({ ...userData, connected: true });
+            client.subscribe('/topic/messages', onMessageReceived);
+            // Move userJoin inside the connect callback
+            userJoin(client);
+        }, onError);
     };
 
-    const onConnected = () => {
-        console.log("WebSocket connected successfully!");
-        setUserData({...userData, "connected": true});
-        stompClient.subscribe('/chatroom/public', onMessageReceived);
-        stompClient.subscribe('/user/' + userData.username + '/private', onPrivateMessage);
-        userJoin();
-    };
 
-    const userJoin = async () => {
-        try {
-            const token = localStorage.getItem("jwtToken");
-            if (!token) {
-                console.error("JWT token not found in localStorage.");
-                return;
-            }
-
-            const response = await axios.get(`http://localhost:8080/api/v1/users/${userData.userId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            const user = response.data;
-            const chatMessage = {
-                senderName: user.username,
-                status: "JOIN"
-            };
-            stompClient.send("/app/message", { Authorization: `Bearer ${token}` }, JSON.stringify(chatMessage));
-        } catch (error) {
-            console.error(error);
+    const userJoin = (client) => {
+        if (client) {
+            const chatMessage = { senderName: userData.username, status: 'JOIN' };
+            client.send('/app/chat', {}, JSON.stringify(chatMessage));
+        } else {
+            console.error('Stomp client is not initialized.');
         }
     };
 
 
+    const sendMessage = () => {
+        if (selectedUser && userData.message && stompClient) {
+            const chatMessage = {
+                senderName: userData.username,
+                receiverName: selectedUser,
+                message: userData.message,
+                status: 'MESSAGE',
+            };
+            stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
+            setUserData({ ...userData, message: '' });
+        }
+    };
 
     const onMessageReceived = (payload) => {
         const payloadData = JSON.parse(payload.body);
-        switch (payloadData.status) {
-            case "JOIN":
-                if (!privateChats.get(payloadData.senderName)) {
-                    privateChats.set(payloadData.senderName, []);
-                    setPrivateChats(new Map(privateChats));
-                }
-                break;
-            case "MESSAGE":
-                setPublicChats([...publicChats, payloadData]);
-                break;
-            default:
-                break;
-        }
-    };
-
-    const onPrivateMessage = (payload) => {
-        const payloadData = JSON.parse(payload.body);
-        if (privateChats.has(payloadData.senderName)) {
-            privateChats.get(payloadData.senderName).push(payloadData);
-            setPrivateChats(new Map(privateChats));
-        } else {
-            const list = [payloadData];
-            privateChats.set(payloadData.senderName, list);
-            setPrivateChats(new Map(privateChats));
-        }
+        setMessages((prevMessages) => [...prevMessages, payloadData]);
     };
 
     const onError = (err) => {
-        console.log("WebSocket connection error:", err);
-        console.error(err);
+        console.error('WebSocket error:', err);
     };
-
-    const handleMessage = (event) => {
-        const {value} = event.target;
-        setUserData({...userData, "message": value});
-    };
-
-    const sendValue = () => {
-        console.log("Sending public message...");
-        if (stompClient) {
-            const chatMessage = {
-                senderName: userData.username,
-                message: userData.message,
-                status: "MESSAGE"
-            };
-            console.log("Message to send:", chatMessage);
-            stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-            setUserData({...userData, "message": ""});
-        }
-    };
-
-    const sendPrivateValue = () => {
-        console.log("Sending private message...");
-        if (stompClient) {
-            const chatMessage = {
-                senderName: userData.username,
-                receiverName: tab,
-                message: userData.message,
-                status: "MESSAGE"
-            };
-            console.log("Private message to send:", chatMessage);
-            stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
-            setUserData({...userData, "message": ""});
-        }
-    };
-
-
-
-    const handleUsername = (event) => {
-        const {value} = event.target;
-        setUserData({...userData, "username": value});
-    };
-
-    const registerUser = async (token) => {
-        try {
-            userData.userId = localStorage.getItem("userId");
-            const response = await axios.get(`http://localhost:8080/api/v1/users/${userData.userId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            const user = response.data;
-            setUserData({...userData, "username": user.username});
-            connect();
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    useEffect(() => {
-        const fetchAllUsers = async () => {
-            try {
-                const token = localStorage.getItem("jwtToken");
-                if (!token) {
-                    console.error("JWT token not found in localStorage.");
-                    return;
-                }
-
-                const response = await axios.get('http://localhost:8080/api/v1/users', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                const users = response.data;
-                setAllUsers(users);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchAllUsers();
-    }, []);
-
 
     return (
         <div className="container">
-            {userData.connected ?
+            {userData.connected ? (
                 <div className="chat-box">
-                    {/* Chat UI */}
-                    <select value={tab} onChange={(e) => setTab(e.target.value)}>
+                    <select value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
+                        <option value="">Select user</option>
                         {allUsers.map((user) => (
                             <option key={user.id} value={user.username}>
                                 {user.username}
@@ -191,32 +94,27 @@ const ChatRoom = () => {
                         ))}
                     </select>
                     <input
-                        id="user-message"
+                        type="text"
                         placeholder="Enter your message"
-                        name="userMessage"
                         value={userData.message}
-                        onChange={handleMessage}
-                        margin="normal"
+                        onChange={(e) => setUserData({ ...userData, message: e.target.value })}
                     />
-                    <button type="button" onClick={sendPrivateValue}>
-                        Send
-                    </button>
+                    <button onClick={sendMessage}>Send</button>
+                    <ul>
+                        {messages.map((msg, index) => (
+                            <li key={index}>
+                                {msg.senderName}: {msg.message}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-                :
+            ) : (
                 <div className="register">
-                    <input
-                        id="user-name"
-                        placeholder="Enter your name"
-                        name="userName"
-                        value={userData.username}
-                        onChange={handleUsername}
-                        margin="normal"
-                    />
-                    <button type="button" onClick={registerUser}>
-                        Connect
-                    </button>
-                </div>}
+                    <p>{`Welcome, ${userData.username}!`}</p>
+                </div>
+            )}
         </div>
     );
 };
+
 export default ChatRoom;
