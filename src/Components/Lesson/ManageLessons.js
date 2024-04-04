@@ -12,6 +12,8 @@ const ManageLessons = () => {
         duration: 0,
     });
     const [groups, setGroups] = useState([]); // State to store groups
+    const [showAddLessonForm, setShowAddLessonForm] = useState(false); // State for showing/hiding the course form
+
 
     useEffect(() => {
         fetchLessons();
@@ -30,6 +32,7 @@ const ManageLessons = () => {
                 headers: { Authorization: `Bearer ${jwtToken}` },
             });
             setLessons(response.data);
+            console.log(response.data);
         } catch (error) {
             console.error("Error fetching lessons:", error);
         }
@@ -78,59 +81,84 @@ const ManageLessons = () => {
         }
     };
 
+    const toggleAddLessonForm = () => {
+        setShowAddLessonForm(!showAddLessonForm);
+    };
+
     return (
-        <div className="manage-lessons-container"> {/* Apply custom CSS class */}
-            <h2>Manage Lessons</h2>
-            <form className="lesson-form"> {/* Apply custom CSS class */}
-                <input
-                    type="text"
-                    name="title"
-                    placeholder="Lesson Title"
-                    value={formData.title}
-                    onChange={handleInputChange}
-                />
-                <input
-                    type="text"
-                    name="description"
-                    placeholder="Lesson Description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                />
-                <input
-                    type="date"
-                    name="date"
-                    value={formData.date}
-                    onChange={handleInputChange}
-                />
-                <select
-                    name="groupName"
-                    value={formData.groupName}
-                    onChange={handleInputChange}
-                    className="scroll-select" // Apply custom class for scrolling
-                >
-                    <option value="">Select Group</option>
-                    {groups.map((group) => (
-                        <option key={group.id} value={group.name}>{group.name}</option>
-                    ))}
-                </select>
-                <input
-                    type="number"
-                    name="duration"
-                    placeholder="Duration (in minutes)"
-                    value={formData.duration}
-                    onChange={handleInputChange}
-                />
-                <button type="button" onClick={createLesson}>
-                    Create Lesson
-                </button>
-            </form>
-            <ul className="lesson-list"> {/* Apply custom CSS class */}
+        <div className="manage-lesson-container"> {/* Apply custom CSS class */}
+            <h2>Manage Courses</h2>
+            <button className="btn btn-primary" onClick={toggleAddLessonForm}>Add Course</button>
+            {showAddLessonForm && (
+                <form className="lesson-form">
+                    {/* Apply custom CSS class */}
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Lesson Title"
+                        value={formData.title}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        type="text"
+                        name="description"
+                        placeholder="Lesson Description"
+                        value={formData.description}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        type="date"
+                        name="date"
+                        value={formData.date}
+                        onChange={handleInputChange}
+                    />
+                    <select
+                        name="groupName"
+                        value={formData.groupName}
+                        onChange={handleInputChange}
+                        className="scroll-select" // Apply custom class for scrolling
+                    >
+                        <option value="">Select Group</option>
+                        {groups.map((group) => (
+                            <option key={group.id} value={group.name}>{group.name}</option>
+                        ))}
+                    </select>
+                    <input
+                        type="number"
+                        name="duration"
+                        placeholder="Duration (in minutes)"
+                        value={formData.duration}
+                        onChange={handleInputChange}
+                    />
+                    <button type="button" onClick={createLesson}>
+                        Create Lesson
+                    </button>
+                </form>
+            )
+            }
+            <table className="lesson-list"> {/* Apply custom CSS class */}
+                <thead>
+                <tr>
+                    <th>Lesson Date</th>
+                    <th>Description</th>
+                    <th>Group</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
                 {lessons.map((lesson) => (
-                    <li key={lesson.id}>
-                        <strong>{lesson.date}</strong>
-                    </li>
+                    <tr key={lesson.id}>
+                        <td>{lesson.date}</td>
+                        <td>{lesson.description}</td>
+                        <td>{lesson.group ? lesson.group.name : 'N/A'}</td> {/* Check if user.group exists */}
+                        <td>
+                            {/*<button className="btn btn-primary" onClick={() => editUser(user)}>Edit</button>*/}
+                            {/*<button className="btn btn-danger" onClick={() => deleteUser(user.id)}>Delete</button>*/}
+                        </td>
+                    </tr>
                 ))}
-            </ul>
+                </tbody>
+            </table>
         </div>
     );
 };

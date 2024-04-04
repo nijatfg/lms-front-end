@@ -43,18 +43,27 @@
 }
 
 .group-list {
-    list-style-type: none;
-    padding: 0;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-.group-list li {
-    background-color: #ffffff;
+.group-list th,
+.group-list td {
     border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    padding: 15px;
+    padding: 8px;
+    text-align: left;
 }
 
-.group-list li:hover {
+.group-list th {
+    background-color: #f2f2f2;
+}
+
+.group-list tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.group-list tr:hover {
     background-color: #f0f0f0;
 }
+
