@@ -31,6 +31,7 @@ const ManageUsers = () => {
                 headers: { Authorization: `Bearer ${jwtToken}` },
             });
             setUsers(response.data);
+            console.log(response.data)
         } catch (error) {
             console.error('Error fetching users:', error);
         }
@@ -150,6 +151,7 @@ const ManageUsers = () => {
                         <th>Username</th>
                         <th>Email</th>
                         <th>Authority</th>
+                        <th>Group</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -160,6 +162,7 @@ const ManageUsers = () => {
                             <td>{user.username}</td>
                             <td>{user.email}</td>
                             <td>{user.authorities[0].authority}</td>
+                            <td>{user.group ? user.group.name : 'N/A'}</td> {/* Check if user.group exists */}
                             <td>
                                 {/*<button className="btn btn-primary" onClick={() => editUser(user)}>Edit</button>*/}
                                 {/*<button className="btn btn-danger" onClick={() => deleteUser(user.id)}>Delete</button>*/}
@@ -169,7 +172,6 @@ const ManageUsers = () => {
                     </tbody>
                 </table>
             </div>
-
         </div>
     );
 };
