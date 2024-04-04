@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import "./ManageGroup.css"; // Import custom CSS file
 
 const ManageGroup = () => {
     const [groups, setGroups] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
-        courseName: '', // Changed to courseName
+        courseName: '',
     });
-    const [courses, setCourses] = useState([]); // State to store courses
+    const [courses, setCourses] = useState([]);
 
     useEffect(() => {
         fetchGroups();
-        fetchCourses(); // Fetch courses when component mounts
+        fetchCourses();
     }, []);
 
     const fetchGroups = async () => {
@@ -65,16 +66,16 @@ const ManageGroup = () => {
             });
             console.log('Group created:', response.data);
             fetchGroups();
-            setFormData({ name: '', courseName: '' }); // Reset form data
+            setFormData({ name: '', courseName: '' });
         } catch (error) {
             console.error("Error creating group:", error);
         }
     };
 
     return (
-        <div>
+        <div className="manage-group-container"> {/* Apply custom CSS class */}
             <h2>Manage Groups</h2>
-            <form>
+            <form className="group-form"> {/* Apply custom CSS class */}
                 <input
                     type="text"
                     name="name"
@@ -94,7 +95,7 @@ const ManageGroup = () => {
                 </select>
                 <button type="button" onClick={createGroup}>Create Group</button>
             </form>
-            <ul>
+            <ul className="group-list"> {/* Apply custom CSS class */}
                 {groups.map((group) => (
                     <li key={group.id}>
                         <strong>{group.name}</strong>

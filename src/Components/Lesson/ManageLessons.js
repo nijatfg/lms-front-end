@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// import "./ManageLessons.css"; // Import CSS file for styling
+import "./ManageLessons.css"; // Import CSS file for styling
 
 const ManageLessons = () => {
     const [lessons, setLessons] = useState([]);
@@ -79,9 +79,9 @@ const ManageLessons = () => {
     };
 
     return (
-        <div>
+        <div className="manage-lessons-container"> {/* Apply custom CSS class */}
             <h2>Manage Lessons</h2>
-            <form>
+            <form className="lesson-form"> {/* Apply custom CSS class */}
                 <input
                     type="text"
                     name="title"
@@ -124,7 +124,7 @@ const ManageLessons = () => {
                     Create Lesson
                 </button>
             </form>
-            <ul>
+            <ul className="lesson-list"> {/* Apply custom CSS class */}
                 {lessons.map((lesson) => (
                     <li key={lesson.id}>
                         <strong>{lesson.date}</strong>

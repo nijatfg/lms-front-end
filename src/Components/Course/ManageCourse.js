@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import "./ManageCourse.css"; // Import custom CSS file
 
 const ManageCourse = () => {
     const [courses, setCourses] = useState([]);
@@ -53,9 +54,9 @@ const ManageCourse = () => {
     };
 
     return (
-        <div>
+        <div className="manage-course-container"> {/* Apply custom CSS class */}
             <h2>Manage Courses</h2>
-            <form>
+            <form className="course-form"> {/* Apply custom CSS class */}
                 <input
                     type="text"
                     name="name"
@@ -72,7 +73,7 @@ const ManageCourse = () => {
                 />
                 <button type="button" onClick={createCourse}>Create Course</button>
             </form>
-            <ul>
+            <ul className="course-list"> {/* Apply custom CSS class */}
                 {courses.map((course) => (
                     <li key={course.id}>
                         <strong>{course.name}</strong>: {course.description}
