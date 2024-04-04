@@ -1,40 +1,50 @@
+/* ParticipationComponentStudent.css */
 .participation-container {
-    font-size: 14px;
+    padding: 20px;
+}
+
+.participation-heading {
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 .participation-records {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .participation-record {
-    display: flex;
-    align-items: center;
     border: 1px solid #ccc;
-    border-radius: 5px;
     padding: 10px;
-    width: calc(50% - 10px); /* Adjust width for responsiveness */
+    margin-bottom: 10px;
 }
 
-.participation-date {
+.lesson-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lesson-date {
     font-weight: bold;
-    margin-right: 10px;
 }
 
-.status {
+.attendance-status {
     padding: 5px 10px;
     border-radius: 5px;
+}
+
+.attendance-status.present {
+    background-color: #4caf50;
+    color: white;
+}
+
+.attendance-status.absent {
+    background-color: #f44336;
+    color: white;
+}
+
+.participation-percentage {
+    font-size: 18px;
     font-weight: bold;
-    text-align: center;
-}
-
-.present {
-    background-color: green;
-    color: white;
-}
-
-.absent {
-    background-color: red;
-    color: white;
+    margin-top: 20px;
 }

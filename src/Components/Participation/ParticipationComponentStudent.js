@@ -37,18 +37,23 @@ const ParticipationComponentStudent = () => {
 
     return (
         <div className="participation-container">
-            <h2>Participation Records</h2>
+            <h2 className="participation-heading">Participation Records</h2>
             <div className="participation-records">
                 {participationRecords.map((record) => (
                     <div className="participation-record" key={record.id}>
-                        <div className="participation-date">{record.lesson.date}</div>
-                        <div className={`status ${record.attendance ? 'present' : 'absent'}`}>
-                            {record.attendance ? 'Present' : 'Absent'}
+                        <div className="lesson-details">
+                            <div className="lesson-date">{record.lesson.date}</div>
+                            <div className={`attendance-status ${record.attendance ? 'present' : 'absent'}`}>
+                                {record.attendance ? 'Present' : 'Absent'}
+                            </div>
                         </div>
                     </div>
                 ))}
             </div>
-            <h2>Participation Percentage: {participationPercentage !== null ? `${participationPercentage}%` : 'Loading...'}</h2>
+            <div className="participation-percentage">
+                <h2>Participation Percentage:</h2>
+                <span className="percentage-value">{participationPercentage !== null ? `${participationPercentage}%` : 'Loading...'}</span>
+            </div>
         </div>
     );
 };
