@@ -1,0 +1,41 @@
+.group-users-container {
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    min-height: 100px;
+}
+
+.group-users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.group-users-header h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.group-users-header p {
+    margin: 0;
+}
+
+.users-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.users-list li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.users-list li p {
+    margin: 5px 0;
+}
