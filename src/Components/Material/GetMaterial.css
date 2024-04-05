@@ -1,0 +1,56 @@
+/* Container styles */
+.get-material-container {
+    padding: 20px;
+    background-color: #fff; /* White background */
+    border-radius: 10px;
+    margin: 20px auto; /* Center the container horizontally */
+    min-height: 500px; /* Set a minimum height */
+    min-width: 1300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 255, 0.1); /* Blue shadow */
+}
+
+/* Heading styles */
+.get-material-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #007bff; /* Blue text color */
+}
+
+/* Table styles */
+.get-material-container table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.get-material-container th,
+.get-material-container td {
+    border: 1px solid #007bff; /* Blue border */
+    padding: 12px;
+    text-align: center;
+}
+
+.get-material-container th {
+    background-color: #007bff; /* Blue background */
+    color: #fff; /* White text color */
+}
+
+.get-material-container tbody tr:hover {
+    background-color: #e8f0fe; /* Light blue background on hover */
+    transition: background-color 0.3s ease;
+}
+
+/* Download link styles */
+.get-material-container .download-link {
+    cursor: pointer;
+    color: #007bff; /* Blue link color */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.get-material-container .download-link:hover {
+    color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-1px);
+}
