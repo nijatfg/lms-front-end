@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import "./SubmitAssignment.css";
 
 const SubmitAssignmentComponent = () => {
     const [title, setTitle] = useState('');
     const [submissionType, setSubmissionType] = useState('link'); // Default to 'link'
     const [submissionValue, setSubmissionValue] = useState(''); // Value for link or file
     const [file, setFile] = useState(null);
-    const [submissions, setSubmissions] = useState([]); // State for storing submissions
+    const [submissions, setSubmissions] = useState([]);
     const assignmentId = localStorage.getItem("assignmentId");
     const groupId = localStorage.getItem("groupId");
     const userId = localStorage.getItem("userId");
 
     useEffect(() => {
-        fetchSubmissions(); // Fetch submissions when the component mounts
+        fetchSubmissions();
     }, []);
 
     const fetchSubmissions = async () => {
@@ -37,9 +38,8 @@ const SubmitAssignmentComponent = () => {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-                responseType: 'blob', // Specify response type as blob
+                responseType: 'blob',
             });
-            // Create a blob URL for the file and open it in a new window
             const blobUrl = URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = blobUrl;
@@ -73,11 +73,9 @@ const SubmitAssignmentComponent = () => {
                 },
             });
             console.log('Submission successful:', response.data);
-            // Clear form fields after successful submission
             setTitle('');
             setSubmissionValue('');
             setFile(null);
-            // Fetch updated submissions after successful submission
             fetchSubmissions();
         } catch (error) {
             console.error('Error submitting assignment:', error);
@@ -85,7 +83,7 @@ const SubmitAssignmentComponent = () => {
     };
 
     return (
-        <div>
+        <div className="submit-assignment-container">
             <h2>Submit Assignment</h2>
             <form onSubmit={handleSubmit}>
                 <div>
@@ -102,7 +100,8 @@ const SubmitAssignmentComponent = () => {
                 {submissionType === 'link' ? (
                     <div>
                         <label>Link:</label>
-                        <input type="text" value={submissionValue} onChange={(e) => setSubmissionValue(e.target.value)}/>
+                        <input type="text" value={submissionValue}
+                               onChange={(e) => setSubmissionValue(e.target.value)}/>
                     </div>
                 ) : (
                     <div>
@@ -112,22 +111,23 @@ const SubmitAssignmentComponent = () => {
                 )}
                 <button type="submit">Submit</button>
             </form>
-            <div>
+            <div className="my-submissions-container">
                 <h3>My Submissions</h3>
                 <ul>
                     {submissions.map(submission => (
                         <li key={submission.id}>
-                            {/* Display submission details */}
-                            <p>Content: {submission.content}</p>
-                            <p>Link: {submission.link}</p>
-                            <p onClick={() => handleDownload(submission.content)}
-                               style={{cursor: 'pointer', color: 'blue', textDecoration: 'underline'}}>
-                                {submission.content}
+                            <div className="submission-info">
+                                <p className="submission-content">Content: {submission.content}</p>
+                                <p className="submission-link">Link: {submission.link}</p>
+                            </div>
+                            <p onClick={() => handleDownload(submission.content)} className="submission-download">
+                                Download
                             </p>
                         </li>
                     ))}
                 </ul>
             </div>
+
         </div>
     );
 };

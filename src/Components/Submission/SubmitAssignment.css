@@ -1,0 +1,128 @@
+.submit-assignment-container {
+    padding: 20px;
+    background-color: #f8f9fa; /* Light background */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    margin: 20px auto; /* Center the container horizontally */
+    min-height: 500px; /* Set a minimum height */
+    min-width: 600px; /* Set a minimum width */
+    width: 80%; /* Adjust the width as needed */
+}
+
+/* Heading styles */
+.submit-assignment-container h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333; /* Dark text color */
+}
+
+.submit-assignment-container form {
+    display: grid;
+    gap: 10px;
+}
+
+.submit-assignment-container label {
+    font-weight: bold;
+}
+
+.submit-assignment-container input[type="text"],
+.submit-assignment-container input[type="file"],
+.submit-assignment-container select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+.submit-assignment-container select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+}
+
+.submit-assignment-container button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff; /* Blue button color */
+    color: #fff; /* White text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-assignment-container button[type="submit"]:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.submit-assignment-container h3 {
+    font-size: 24px;
+    margin-top: 20px;
+    color: #333; /* Dark text color */
+}
+
+.submit-assignment-container ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+}
+
+.submit-assignment-container li {
+    margin-bottom: 15px;
+}
+
+.submit-assignment-container p {
+    margin: 5px 0;
+}
+
+.submit-assignment-container p a {
+    color: #007bff; /* Blue link color */
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.submit-assignment-container p a:hover {
+    color: #0056b3; /* Darker blue on hover */
+}
+
+/* My Submissions styles */
+.my-submissions-container {
+    padding: 20px;
+    background-color: #f8f9fa; /* Light background */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    margin: 20px auto; /* Center the container horizontally */
+    min-height: 300px; /* Set a minimum height */
+    width: 80%; /* Adjust the width as needed */
+}
+
+.my-submissions-container h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333; /* Dark text color */
+}
+
+.my-submissions-container ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+}
+
+.my-submissions-container li {
+    margin-bottom: 20px;
+}
+
+.submission-info {
+    margin-bottom: 10px;
+}
+
+.submission-content,
+.submission-link {
+    margin: 5px 0;
+}
+
+.submission-download {
+    color: #007bff; /* Blue link color */
+    cursor: pointer;
+    text-decoration: underline;
+}
