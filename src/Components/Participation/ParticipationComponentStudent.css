@@ -1,50 +1,97 @@
-/* ParticipationComponentStudent.css */
-.participation-container {
-    padding: 20px;
+/* Global styles for the entire page */
+body {
+    background-color: #fff; /* Set the background color of the entire page to white */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
 }
 
+/* Styles for the participation container */
+.participation-container {
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 10px;
+    min-height: 300px; /* Set a minimum height */
+    min-width: 1300px;
+}
+
+
+/* Heading styles */
 .participation-heading {
     font-size: 24px;
     margin-bottom: 20px;
 }
 
-.participation-records {
+/* Table styles */
+.participation-table {
+    width: 100%;
+    border-collapse: collapse;
     margin-bottom: 20px;
 }
 
-.participation-record {
-    border: 1px solid #ccc;
+.participation-table th,
+.participation-table td {
+    border: 1px solid #ddd;
     padding: 10px;
-    margin-bottom: 10px;
 }
 
-.lesson-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.lesson-date {
+.participation-table th {
+    background-color: #f2f2f2;
     font-weight: bold;
 }
 
-.attendance-status {
-    padding: 5px 10px;
-    border-radius: 5px;
+.participation-table tr:hover {
+    background-color: #f5f5f5;
 }
 
-.attendance-status.present {
-    background-color: #4caf50;
-    color: white;
-}
-
-.attendance-status.absent {
-    background-color: #f44336;
-    color: white;
-}
-
-.participation-percentage {
-    font-size: 18px;
-    font-weight: bold;
+/* Attendance details container styles */
+.attendance-details-container {
     margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    max-height: 300px; /* Set a maximum height for scrollability */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Attendance details table styles */
+.attendance-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.attendance-details-table th,
+.attendance-details-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.attendance-details-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.attendance-details-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+
+/* Button styles */
+button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block; /* Change button display to block */
+    margin: 0 auto; /* Center the button horizontally */
+}
+
+button:hover {
+    background-color: #0056b3;
 }

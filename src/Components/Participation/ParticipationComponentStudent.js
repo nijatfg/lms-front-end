@@ -5,6 +5,7 @@ import './ParticipationComponentStudent.css'; // Import your CSS file
 const ParticipationComponentStudent = () => {
     const [participationRecords, setParticipationRecords] = useState([]);
     const [participationPercentage, setParticipationPercentage] = useState(null);
+    const [selectedGroupId, setSelectedGroupId] = useState(null);
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('jwtToken');
 
@@ -35,25 +36,63 @@ const ParticipationComponentStudent = () => {
         }
     };
 
+    const handleShowDetails = (groupId) => {
+        setSelectedGroupId(groupId === selectedGroupId ? null : groupId);
+    };
+
+    // Get unique group names from participationRecords
+    const uniqueGroupNames = [...new Set(participationRecords.map(record => record.lesson.group.name))];
+
     return (
         <div className="participation-container">
             <h2 className="participation-heading">Participation Records</h2>
-            <div className="participation-records">
-                {participationRecords.map((record) => (
-                    <div className="participation-record" key={record.id}>
-                        <div className="lesson-details">
-                            <div className="lesson-date">{record.lesson.date}</div>
-                            <div className={`attendance-status ${record.attendance ? 'present' : 'absent'}`}>
-                                {record.attendance ? 'Present' : 'Absent'}
-                            </div>
-                        </div>
-                    </div>
+            <table className="participation-table">
+                <thead>
+                <tr>
+                    <th>Group Name</th>
+                    <th>Percentage</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {uniqueGroupNames.map(groupName => (
+                    <tr key={groupName}>
+                        <td>{groupName}</td>
+                        <td>{participationPercentage !== null ? `${participationPercentage}%` : 'Loading...'}</td>
+                        <td>
+                            <button onClick={() => handleShowDetails(groupName)}>
+                                {selectedGroupId === groupName ? 'Hide Details' : 'Show Details'}
+                            </button>
+                        </td>
+                    </tr>
                 ))}
-            </div>
-            <div className="participation-percentage">
-                <h2>Participation Percentage:</h2>
-                <span className="percentage-value">{participationPercentage !== null ? `${participationPercentage}%` : 'Loading...'}</span>
-            </div>
+                </tbody>
+            </table>
+            {selectedGroupId && (
+                <div className="attendance-details-container">
+                    <h3>Attendance Details</h3>
+                    <table className="attendance-details-table">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {participationRecords
+                            .filter(record => record.lesson.group.name === selectedGroupId)
+                            .map(record => (
+                                <tr key={record.id}>
+                                    <td>{record.lesson.date}</td>
+                                    <td>
+                                        {record.attendance ? 'Present' : 'Absent'}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 };
