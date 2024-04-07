@@ -1,162 +1,193 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import SockJS from 'sockjs-client';
-import {over} from 'stompjs';
-import axios from 'axios';
-import {Box, Button, List, ListItem, MenuItem, TextField, Typography} from '@mui/material';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-
-const theme = createTheme();
+import Stomp from 'stompjs';
+import "./ChatRoom.css";
+import axios from "axios";
 
 const ChatRoom = () => {
+    // State variables
     const [stompClient, setStompClient] = useState(null);
-    const [userData, setUserData] = useState({
-        username: '',
-        connected: false,
-        message: '',
-        senderName: '',
-        receiverName: '',
-        date: ''
-    });
-    const [allUsers, setAllUsers] = useState([]);
-    const [messages, setMessages] = useState([]);
-    const [selectedUser, setSelectedUser] = useState('');
+    const [username, setUsername] = useState('');
+    const [fullname, setFullname] = useState('');
+    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [connectedUsers, setConnectedUsers] = useState([]);
+    const [messageInput, setMessageInput] = useState('');
+    const [chatArea, setChatArea] = useState([]);
+    const userIdData = localStorage.getItem("userId");
 
     useEffect(() => {
-        const fetchData = async () => {
-            const token = localStorage.getItem('jwtToken');
-            if (token) {
-                try {
-                    const userId = localStorage.getItem('userId');
-                    const userResponse = await axios.get(`http://localhost:8080/api/v1/users/${userId}`, {
-                        headers: {Authorization: `Bearer ${token}`},
-                    });
-                    const usersResponse = await axios.get('http://localhost:8080/api/v1/users', {
-                        headers: {Authorization: `Bearer ${token}`},
-                    });
-                    const currentUser = userResponse.data;
-                    console.log(userResponse.data);
-                    const allUsersData = usersResponse.data;
-                    setUserData({...userData, username: currentUser.username, senderName: currentUser.username});
-                    setAllUsers(allUsersData);
-                    connect();
-                } catch (error) {
-                    console.error('Error fetching data:', error);
-                }
-            }
+        // Connect to WebSocket server
+        const socket = new SockJS('http://localhost:8080/ws');
+        const client = Stomp.over(socket);
+        setStompClient(client);
+
+        return () => {
+            client.disconnect();
         };
-        fetchData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const connect = () => {
-        const socket = new SockJS('http://localhost:8080/ws');
-        const client = over(socket);
-        client.connect({}, () => {
-            setStompClient(client);
-            setUserData({...userData, connected: true});
-            client.subscribe('/topic/messages', onMessageReceived);
-            // Move userJoin inside the connect callback
-            userJoin(client);
-        }, onError);
+    useEffect(() => {
+        if (stompClient) {
+            stompClient.connect({}, onConnected, onError);
+        }
+    }, [stompClient]);
+
+    const onConnected = () => {
+        // Subscribe to message queues and fetch connected users
+        stompClient.subscribe(`/user/${username}/queue/messages`, onMessageReceived);
+        stompClient.subscribe(`/user/public`, onMessageReceived);
+        findAndDisplayConnectedUsers();
     };
 
+    const onMessageReceived = async (payload) => {
+        // Update chat area and display notifications for new messages
+        await findAndDisplayConnectedUsers();
+        const message = JSON.parse(payload.body);
+        if (selectedUserId && selectedUserId === message.senderId) {
+            setChatArea(prevChatArea => [
+                ...prevChatArea,
+                { senderId: message.senderId, content: message.content }
+            ]);
+        }
 
-    const userJoin = (client) => {
-        if (client) {
-            const chatMessage = {senderName: userData.username, status: 'JOIN'};
-            client.send('/app/chat', {}, JSON.stringify(chatMessage));
-        } else {
-            console.error('Stomp client is not initialized.');
+        const notifiedUser = document.getElementById(message.senderId);
+        if (notifiedUser && !notifiedUser.classList.contains('active')) {
+            const nbrMsg = notifiedUser.querySelector('.nbr-msg');
+            if (nbrMsg) {
+                nbrMsg.classList.remove('hidden');
+                nbrMsg.textContent = parseInt(nbrMsg.textContent) + 1;
+            }
         }
     };
 
+    const onError = () => {
+        console.error('Could not connect to WebSocket server.');
+    };
+
+    const findAndDisplayConnectedUsers = async () => {
+        // Fetch and display connected users
+        try {
+            const jwtToken = localStorage.getItem('jwtToken');
+            if (!jwtToken) {
+                console.error('JWT token not found in localStorage.');
+                return;
+            }
+
+            const response = await axios.get('http://localhost:8080/api/v1/users/connectedUsers', {
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+            });
+            if (!response.data) {
+                console.error('Error fetching users.');
+                return;
+            }
+
+            setConnectedUsers(response.data.filter(user => user.nickName !== user.username));
+        } catch (error) {
+            console.error('Error fetching and displaying users:', error);
+        }
+    };
+
+    const userItemClick = (userId) => {
+        setSelectedUserId(userId);
+        fetchAndDisplayUserChat(userId);
+    };
+
+    const fetchAndDisplayUserChat = async (userId) => {
+        // Fetch and display chat messages for a selected user
+        try {
+            const userResponse = await axios.get(`http://localhost:8080/api/v1/users/${userIdData}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+                },
+            });
+
+            if (!userResponse.data || !userResponse.data.username) {
+                console.error('Username not found in user data.');
+                return;
+            }
+
+            setUsername(userResponse.data.username);
+
+            const userChatResponse = await axios.get(`http://localhost:8080/api/v1/chats/messages/${username}/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+                },
+            });
+
+            if (!userChatResponse.data || !Array.isArray(userChatResponse.data)) {
+                console.error('User chat data is not an array.');
+                return;
+            }
+
+            setChatArea(userChatResponse.data.map(chat => ({ senderId: chat.senderId, content: chat.content })));
+        } catch (error) {
+            console.error('Error fetching and displaying user chat:', error);
+        }
+    };
 
     const sendMessage = () => {
-        if (selectedUser && userData.message && stompClient) {
+        // Send a message through WebSocket
+        if (messageInput.trim() && stompClient) {
             const chatMessage = {
-                senderName: userData.username, // Use userData.username as the senderName
-                receiverName: selectedUser,
-                message: userData.message,
-                status: 'MESSAGE',
+                senderId: username,
+                recipientId: selectedUserId,
+                content: messageInput.trim(),
+                timestamp: new Date()
             };
-            stompClient.send('/app/chat', {}, JSON.stringify(chatMessage));
-            setUserData({...userData, message: '', senderName: userData.username}); // Update senderName here
+            stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
+            setChatArea([...chatArea, { senderId: username, content: messageInput.trim() }]);
+            setMessageInput('');
         }
     };
 
-    const onMessageReceived = (payload) => {
-        const payloadData = JSON.parse(payload.body);
-        setMessages((prevMessages) => [...prevMessages, payloadData]);
-    };
-
-    const onError = (err) => {
-        console.error('WebSocket error:', err);
+    const onLogout = () => {
+        // Handle user logout
+        stompClient.send("/app/user.disconnectUser", {}, JSON.stringify({
+            nickName: username,
+            fullName: fullname,
+            status: 'OFFLINE'
+        }));
+        window.location.reload();
     };
 
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline/>
-            <div className="container">
-                {userData.connected ? (
-                    <Box sx={{display: 'flex', flexDirection: 'column', height: '100vh'}}>
-                        {/* Chat Header */}
-                        <Box sx={{backgroundColor: theme.palette.primary.main, color: '#fff', p: 2}}>
-                            <Typography variant="h6">Chat Room</Typography>
-                        </Box>
-                        {/* Recipient Selection */}
-                        <Box sx={{p: 2}}>
-                            <TextField
-                                select
-                                label="Select Recipient"
-                                value={selectedUser}
-                                onChange={(e) => setSelectedUser(e.target.value)}
-                                fullWidth
-                            >
-                                {allUsers.map((user) => (
-                                    <MenuItem key={user.id} value={user.username}>
-                                        {user.username}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </Box>
-                        {/* Chat Messages */}
-                        <List sx={{flex: 1, overflowY: 'auto', px: 2}}>
-                            {messages.map((msg, index) => (
-                                <ListItem key={index} sx={{
-                                    display: 'flex',
-                                    justifyContent: msg.senderName === userData.username ? 'flex-end' : 'flex-start'
-                                }}>
-                                    <Box sx={{
-                                        bgcolor: msg.senderName === userData.username ? 'primary.main' : 'background.default',
-                                        color: '#fff',
-                                        borderRadius: 4,
-                                        p: 1
-                                    }}>
-                                        <Typography variant="body1">{msg.message}</Typography>
-                                    </Box>
-                                </ListItem>
-                            ))}
-                        </List>
-                        {/* Message Input */}
-                        <Box sx={{p: 2}}>
-                            <TextField
-                                type="text"
-                                placeholder="Enter your message"
-                                value={userData.message}
-                                onChange={(e) => setUserData({...userData, message: e.target.value})}
-                                fullWidth
-                            />
-                            <Button variant="contained" color="primary" onClick={sendMessage} sx={{mt: 2}}>Send</Button>
-                        </Box>
-                    </Box>
-                ) : (
-                    <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh'}}>
-                        <Typography variant="h4">Welcome, {userData.username}!</Typography>
-                    </Box>
-                )}
+        <div className="chat-container">
+            <div className="users-list">
+                <div className="users-list-container">
+                    <h2>Online Users</h2>
+                    <ul>
+                        {connectedUsers.map(user => (
+                            <li key={user.username}
+                                className={`user-item ${selectedUserId === user.username ? 'active' : ''}`}
+                                onClick={() => userItemClick(user.username)}>
+                                <span>{user.username}</span>
+                                <span className="nbr-msg hidden">0</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div>
+                    <p id="connected-user-fullname">{fullname}</p>
+                    <button className="logout" onClick={onLogout}>Logout</button>
+                </div>
             </div>
-        </ThemeProvider>
+            <div className="chat-area">
+                <div className="chat-area" id="chat-messages">
+                    {chatArea.map((message, index) => (
+                        <div key={index} className={`message ${message.senderId === username ? 'sender' : 'receiver'}`}>
+                            <p>{message.content}</p>
+                        </div>
+                    ))}
+                </div>
+                <form className="message-input" onSubmit={sendMessage}>
+                    <input type="text" id="message" placeholder="Type your message..." value={messageInput}
+                           onChange={(e) => setMessageInput(e.target.value)} />
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        </div>
     );
 };
 
