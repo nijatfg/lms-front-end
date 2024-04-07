@@ -110,7 +110,7 @@ const ChatRoom = () => {
 
             setUsername(userResponse.data.username);
 
-            const userChatResponse = await axios.get(`http://localhost:8080/api/v1/chats/messages/${username}/${userId}`, {
+            const userChatResponse = await axios.get(`http://localhost:8080/api/v1/chats/messages/${userResponse.data.username}/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
                 },
