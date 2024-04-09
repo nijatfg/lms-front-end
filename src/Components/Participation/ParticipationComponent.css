@@ -1,36 +1,36 @@
-/* ParticipationComponent.css */
-
 .participation-container {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 20px;
+    padding: 10px;
     background-color: #f5f5f5;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 80%; /* Adjust width as needed */
+    margin: 0 auto; /* Center the container horizontally */
 }
 
 .participation-header {
-    font-size: 28px;
-    margin-bottom: 20px;
+    font-size: 24px;
+    margin-bottom: 10px;
     color: #333;
     text-align: center;
 }
 
 .lesson-date {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
 }
 
 .lesson-date label {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
-    margin-right: 10px;
+    margin-right: 8px;
 }
 
 .lesson-date select {
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 6px;
-    border: 2px solid #007bff;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #007bff;
     background-color: #fff;
     color: #333;
     transition: border-color 0.3s ease;
@@ -41,42 +41,80 @@
     border-color: #0056b3;
 }
 
-.attendance-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-}
-
-.attendance-item {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.attendance-item:hover {
-    transform: translateY(-5px);
-}
-
-.attendance-item span {
-    margin-bottom: 5px;
-    font-size: 16px;
-    color: #333;
-    text-align: center;
-    margin-right: 10px; /* Added margin-right for text alignment */
-}
-
-.attendance-item button {
-    padding: 10px 20px;
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
     margin-top: 10px;
+}
+
+.attendance-table th,
+.attendance-table td {
+    padding: 6px; /* Decrease padding for a more compact layout */
+    border: 1px solid #ddd;
+    text-align: center; /* Center-align table content */
+}
+
+.attendance-table th {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.attendance-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.attendance-table tr:hover {
+    background-color: #e6f7ff;
+}
+
+.attendance-table button {
+    display: inline-block; /* Make buttons display horizontally */
+    margin: 4px; /* Add margin between buttons */
+    padding: 6px 10px;
     background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 6px;
+    border-radius: 3px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-.attendance-item button:hover {
+.attendance-table button:hover {
     background-color: #0056b3;
+}
+
+.attendance-records {
+    margin-top: 10px;
+}
+
+.attendance-records h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.attendance-records table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+.attendance-records th,
+.attendance-records td {
+    padding: 6px;
+    border: 1px solid #ddd;
+    text-align: center; /* Center-align table content */
+}
+
+.attendance-records th {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.attendance-records tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.attendance-records tr:hover {
+    background-color: #e6f7ff;
 }

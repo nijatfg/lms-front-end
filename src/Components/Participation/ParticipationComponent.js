@@ -7,7 +7,8 @@ const ParticipationComponent = ({userId}) => {
     const [lessonDates, setLessonDates] = useState([]);
     const [students, setStudents] = useState([]);
     const [attendanceRecords, setAttendanceRecords] = useState([]);
-    const groupId = localStorage.getItem("groupId");
+    const [showRecords, setShowRecords] = useState(false); // State to control visibility of records
+    const groupId = localStorage.getItem('groupId');
 
     useEffect(() => {
         fetchLessonDates();
@@ -22,7 +23,7 @@ const ParticipationComponent = ({userId}) => {
                     Authorization: `Bearer ${token}`, // Include JWT token in headers
                 },
             });
-            setLessonDates(response.data.map(lesson => lesson.date)); // Extract lesson dates from response
+            setLessonDates(response.data.map((lesson) => lesson.date)); // Extract lesson dates from response
             // Set initial lesson date to the first date in the list
             if (response.data.length > 0) {
                 setLessonDate(response.data[0].date);
@@ -40,7 +41,9 @@ const ParticipationComponent = ({userId}) => {
                     Authorization: `Bearer ${token}`, // Include JWT token in headers
                 },
             });
-            const filteredStudents = response.data.filter(student => student.authorities.some(auth => auth.authority === 'STUDENT'));
+            const filteredStudents = response.data.filter((student) =>
+                student.authorities.some((auth) => auth.authority === 'STUDENT')
+            );
             console.log(response.data);
             setStudents(filteredStudents);
         } catch (error) {
@@ -80,10 +83,10 @@ const ParticipationComponent = ({userId}) => {
 
             console.log('Attendance marked:', attendanceResponse.data);
 
-            // Update attendance records
-            setAttendanceRecords(prevState => {
-                const updatedRecords = prevState.map(record => {
-                    if (record.userId === studentId) {
+            // Update attendance records for the specific student
+            setAttendanceRecords((prevState) => {
+                const updatedRecords = prevState.map((record) => {
+                    if (record.userId === studentId && record.date === lessonDate) {
                         return {
                             ...record,
                             attendance: isPresent,
@@ -98,6 +101,48 @@ const ParticipationComponent = ({userId}) => {
         }
     };
 
+    const fetchParticipationRecords = async (userId) => {
+        try {
+            const token = localStorage.getItem('jwtToken'); // Get JWT token from localStorage
+            const response = await axios.get(`http://localhost:8080/api/v1/participation/participationRecords/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include JWT token in headers
+                },
+            });
+            setAttendanceRecords(response.data); // Set the fetched participation records
+            console.log(response.data)
+            // Scroll to the attendance records section
+            document.getElementById('attendance-records').scrollIntoView({behavior: 'smooth'});
+        } catch (error) {
+            console.error('Error fetching participation records:', error);
+        }
+    };
+
+
+    const handleViewRecords = async (studentName) => {
+        try {
+            const token = localStorage.getItem('jwtToken'); // Get JWT token from localStorage
+
+            // Fetch user ID based on the student's username
+            const response = await axios.get(`http://localhost:8080/api/v1/users/username/${studentName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include JWT token in headers
+                },
+            });
+            console.log(response.data)
+
+            const userId = response.data.id; // Assuming the response includes the user ID
+
+            // Fetch participation records using the fetched user ID
+            fetchParticipationRecords(userId);
+
+            // Toggle visibility of attendance records
+            setShowRecords(!showRecords);
+        } catch (error) {
+            console.error('Error fetching user ID or participation records:', error);
+        }
+    };
+
     return (
         <div className="participation-container">
             <h2 className="participation-header">Participation</h2>
@@ -105,21 +150,58 @@ const ParticipationComponent = ({userId}) => {
                 <label htmlFor="lessonDateSelect">Select Lesson Date:</label>
                 <select id="lessonDateSelect" value={lessonDate} onChange={(e) => setLessonDate(e.target.value)}>
                     {lessonDates.map((date) => (
-                        <option key={date} value={date}>{date}</option>
+                        <option key={date} value={date}>
+                            {date}
+                        </option>
                     ))}
                 </select>
             </div>
-            <div className="attendance-list">
+            <table className="attendance-table">
+                <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Group Name</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
                 {students.map((student) => (
-                    <div key={student.id} className="attendance-item">
-                        <span>{student.username}</span> <span>{student.group.name}</span>
-                        <button onClick={() => markAttendance(lessonDate, student.id, true)}>Attend</button>
-                        <button onClick={() => markAttendance(lessonDate, student.id, false)}>Absent</button>
-                    </div>
+                    <tr key={student.id}>
+                        <td>{student.username}</td>
+                        <td>{student.group.name}</td>
+                        <td>
+                            <button onClick={() => markAttendance(lessonDate, student.id, true)}>Attend</button>
+                            <button onClick={() => markAttendance(lessonDate, student.id, false)}>Absent</button>
+                            <button onClick={() => handleViewRecords(student.username)}>
+                                {showRecords ? 'Hide Records' : 'View Records'}
+                            </button>
+                        </td>
+                    </tr>
                 ))}
-            </div>
+                </tbody>
+            </table>
+            {showRecords && (
+                <div className="attendance-records">
+                    <h3>Attendance Records</h3>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Attendance Mark</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {attendanceRecords.map((record) => (
+                            <tr key={record.id}>
+                                <td>{record.lesson.date}</td>
+                                <td>{record.attendance ? 'Present' : 'Absent'}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 };
-
-export default ParticipationComponent;
+export default ParticipationComponent
