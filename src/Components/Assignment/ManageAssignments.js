@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import "./ManageAssignments.css"
 
 const ManageAssignments = () => {
     const [assignments, setAssignments] = useState([]);
@@ -53,23 +54,24 @@ const ManageAssignments = () => {
     };
 
     return (
-        <div>
+        <div className="manage-assignments-container">
             <h2>Manage Assignments</h2>
             <div>
                 <label>Title:</label>
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)}/>
             </div>
             <div>
                 <label>Description:</label>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                <textarea value={description} onChange={(e) => setDescription(e.target.value)}/>
             </div>
             <div>
                 <label>Due Date:</label>
-                <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+                <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)}/>
             </div>
             <div>
                 <label>Submission Requirements:</label>
-                <input type="text" value={submissionRequirements} onChange={(e) => setSubmissionRequirements(e.target.value)} />
+                <input type="text" value={submissionRequirements}
+                       onChange={(e) => setSubmissionRequirements(e.target.value)}/>
             </div>
             <div>
                 <label>Select Group:</label>

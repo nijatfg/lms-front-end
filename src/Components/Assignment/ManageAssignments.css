@@ -1,0 +1,79 @@
+.manage-assignments-container {
+    font-family: 'Roboto', sans-serif;
+    max-width: 1200px; /* Increased max-width for better readability */
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 700px;
+    overflow-y: auto; /* Add scrollbar if content exceeds container height */
+}
+
+.manage-assignments-container h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.manage-assignments-container label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #555;
+    display: block;
+}
+
+.manage-assignments-container input[type="text"],
+.manage-assignments-container textarea,
+.manage-assignments-container input[type="date"],
+.manage-assignments-container select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.manage-assignments-container input[type="text"]:focus,
+.manage-assignments-container textarea:focus,
+.manage-assignments-container input[type="date"]:focus,
+.manage-assignments-container select:focus {
+    border-color: #007bff;
+}
+
+.manage-assignments-container button {
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.manage-assignments-container button:hover {
+    background-color: #0056b3;
+}
+
+.manage-assignments-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.manage-assignments-container ul li {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0;
+}
+
+.manage-assignments-container ul li:last-child {
+    border-bottom: none;
+}
+
+.manage-assignments-container ul li p {
+    margin: 5px 0;
+    color: #333;
+}
