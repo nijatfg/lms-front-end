@@ -1,0 +1,147 @@
+/* Base styles */
+
+.upload-material-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 8px; /* Decreased padding to reduce height */
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Ensure content doesn't overflow container */
+}
+
+.upload-material-container h2 {
+    font-size: 24px; /* Reduced font size */
+    margin-bottom: 10px; /* Reduced margin bottom */
+    color: #333;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px; /* Reduced letter spacing */
+}
+
+.upload-material-container form div {
+    margin-bottom: 8px; /* Reduced margin bottom */
+}
+
+.upload-material-container form label {
+    font-weight: bold;
+    color: #555;
+}
+
+.upload-material-container form input[type="text"],
+.upload-material-container form input[type="file"] {
+    width: calc(100% - 24px); /* Adjusted width to accommodate padding and borders */
+    padding: 10px; /* Reduced padding */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+    background-color: #f8f8f8;
+}
+
+.upload-material-container form input[type="text"]:focus,
+.upload-material-container form input[type="file"]:focus {
+    border-color: #007bff;
+}
+
+.upload-material-container form button[type="submit"] {
+    padding: 10px 18px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-material-container form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Style for the "Choose File" button in the upload form */
+.upload-material-container form input[type="file"] {
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-material-container form input[type="file"]::before {
+    content: 'Choose File';
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-material-container form input[type="file"]:hover::before {
+    background-color: #0056b3;
+}
+
+.upload-material-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.upload-material-container ul li {
+    margin-bottom: 8px; /* Reduced margin bottom */
+    padding: 10px; /* Reduced padding */
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease; /* Added transition for hover effect */
+}
+
+.upload-material-container ul li:hover {
+    transform: translateY(-5px); /* Increased hover effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.upload-material-container ul li strong {
+    font-size: 18px; /* Reduced font size */
+    color: #333;
+    display: block;
+    margin-bottom: 8px; /* Reduced margin bottom */
+}
+
+.upload-material-container ul li p {
+    color: #555;
+    margin-bottom: 4px; /* Reduced margin bottom */
+}
+
+.upload-material-container ul li p:last-child {
+    margin-bottom: 8px; /* Reduced margin bottom */
+}
+
+.upload-material-container ul li p:hover {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* Circular progress bar styles */
+.progress-container {
+    position: relative;
+    width: 100px; /* Adjust size as needed */
+    height: 100px; /* Adjust size as needed */
+}
+
+.progress-ring {
+    fill: none;
+    stroke: #007bff; /* Progress bar color */
+    stroke-width: 8px; /* Progress bar thickness */
+    stroke-linecap: round;
+    stroke-dasharray: 314; /* Circumference of a circle with radius 50 */
+    stroke-dashoffset: 314; /* Start with full circle */
+    transition: stroke-dashoffset 0.3s ease; /* Smooth transition for progress update */
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    color: #333;
+}

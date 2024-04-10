@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import "./UploadMaterial.css"
 
 const UploadMaterialComponent = () => {
     const [title, setTitle] = useState('');
@@ -9,6 +10,7 @@ const UploadMaterialComponent = () => {
     const [file, setFile] = useState(null);
     const [groups, setGroups] = useState([]);
     const [materials, setMaterials] = useState([]);
+    const [progress, setProgress] = useState(0);
 
     useEffect(() => {
         const groupId = localStorage.getItem('groupId');
@@ -82,12 +84,18 @@ const UploadMaterialComponent = () => {
         formData.append('groupId', groupId);
 
         try {
-            const response = await axios.post('http://localhost:8080/api/v1/materials/upload', formData, {
+            const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}`, // Include JWT token in headers
+                    Authorization: `Bearer ${token}`,
                 },
-            });
+                onUploadProgress: (progressEvent) => {
+                    const progressValue = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+                    setProgress(progressValue);
+                },
+            };
+
+            const response = await axios.post('http://localhost:8080/api/v1/materials/upload', formData, config);
             console.log('Material uploaded:', response.data);
             // Clear form fields after successful upload
             setTitle('');
@@ -95,6 +103,7 @@ const UploadMaterialComponent = () => {
             setContent('');
             setFile(null);
             fetchMaterials(groupId); // Refresh materials list for the selected group
+            setProgress(0); // Reset progress after upload
         } catch (error) {
             console.error('Error uploading material:', error);
         }
@@ -106,24 +115,44 @@ const UploadMaterialComponent = () => {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Title:</label>
-                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required/>
+                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
                 </div>
                 <div>
                     <label>Type:</label>
-                    <input type="text" value={type} onChange={(e) => setType(e.target.value)} required/>
+                    <input type="text" value={type} onChange={(e) => setType(e.target.value)} required />
                 </div>
                 <div>
                     <label>Content:</label>
-                    <input type="text" value={content} onChange={(e) => setContent(e.target.value)} required/>
+                    <input type="text" value={content} onChange={(e) => setContent(e.target.value)} required />
                 </div>
                 <div>
-                    <input type="hidden" value={groupId}/>
+                    <input type="hidden" value={groupId} />
                 </div>
                 <div>
                     <label>File:</label>
-                    <input type="file" onChange={(e) => setFile(e.target.files[0])} required/>
+                    <input type="file" onChange={(e) => setFile(e.target.files[0])} required />
                 </div>
                 <button type="submit">Upload</button>
+
+                {/* Circular progress bar */}
+                <div className="progress-container">
+                    <svg className="progress-ring" width="100" height="100">
+                        <circle
+                            className="progress-ring-circle"
+                            stroke="#007bff"
+                            strokeWidth="8"
+                            fill="transparent"
+                            r="42"
+                            cx="50"
+                            cy="50"
+                            style={{
+                                strokeDasharray: 2 * Math.PI * 42,
+                                strokeDashoffset: 2 * Math.PI * 42 * (1 - progress / 100),
+                            }}
+                        />
+                    </svg>
+                    <div className="progress-text">{progress}%</div>
+                </div>
             </form>
 
             <h2>Uploaded Materials</h2>
@@ -134,8 +163,10 @@ const UploadMaterialComponent = () => {
                         <p>Type: {material.type}</p>
                         <p>Content: {material.content}</p>
                         <p>Group ID: {material.groupId}</p>
-                        <p onClick={() => handleDownload(material.content)}
-                           style={{cursor: 'pointer', color: 'blue', textDecoration: 'underline'}}>
+                        <p
+                            onClick={() => handleDownload(material.content)}
+                            style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                        >
                             {material.content}
                         </p>
                         {/* Add more details as needed */}
