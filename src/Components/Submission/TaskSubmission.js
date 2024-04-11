@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import GradeSubmission from "../Grade/GradeSubmission"; // Assuming GradeSubmission is a separate component for grading
+import "./TaskSubmission.css";
 
 const TaskSubmission = () => {
     const [assignments, setAssignments] = useState([]);
@@ -24,7 +25,6 @@ const TaskSubmission = () => {
             });
             setAssignments(response.data);
             response.data.forEach(task => {
-                console.log(task.id);
                 fetchSubmissions(task.id); // Fetch submissions for each task
             });
         } catch (error) {
@@ -40,7 +40,6 @@ const TaskSubmission = () => {
                 },
             });
             setSubmissions(prevSubmissions => [...prevSubmissions, ...response.data]); // Append new submissions to existing list
-            console.log(response.data);
         } catch (error) {
             console.error('Error fetching submissions:', error);
         }
@@ -48,14 +47,12 @@ const TaskSubmission = () => {
 
     const handleDownload = async (fileName) => {
         try {
-            const token = localStorage.getItem('jwtToken');
             const response = await axios.get(`http://localhost:8080/api/v1/submissions/download/${fileName}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
                 responseType: 'blob', // Specify response type as blob
             });
-            // Create a blob URL for the file and open it in a new window
             const blobUrl = URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = blobUrl;
@@ -83,7 +80,7 @@ const TaskSubmission = () => {
     };
 
     return (
-        <div style={{ position: 'relative' }}>
+        <div className="task-submission-container">
             <h2>Tasks and Submissions</h2>
             <div>
                 <h3>Tasks</h3>
@@ -92,7 +89,6 @@ const TaskSubmission = () => {
                         <li key={task.id}>
                             <p>Title: {task.title}</p>
                             <p>Description: {task.description}</p>
-                            {/* Display other task details as needed */}
                             <div>
                                 <h4>Submissions</h4>
                                 <ul>
@@ -103,11 +99,9 @@ const TaskSubmission = () => {
                                                 <p>Content: {submission.content}</p>
                                                 <p>Link: {submission.link}</p>
                                                 <p>User: {submission.user.username}</p>
-                                                {/* Add download functionality to content */}
-                                                <p onClick={() => handleDownload(submission.content)} style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>
+                                                <p onClick={() => handleDownload(submission.content)} className="download-link">
                                                     {submission.content}
                                                 </p>
-                                                {/* Add grade button */}
                                                 <button onClick={() => handleGradeSubmission(submission.id)}>Grade</button>
                                             </li>
                                         ))}
@@ -117,9 +111,8 @@ const TaskSubmission = () => {
                     ))}
                 </ul>
             </div>
-            {/* Render GradeSubmission component conditionally */}
             {selectedSubmission && (
-                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', background: 'white', zIndex: 9999 }}>
+                <div className="grade-submission-container">
                     <GradeSubmission submissionId={selectedSubmission} refreshSubmissions={refreshSubmissions} handleInputChange={handleInputChange} gradeData={gradeData} />
                 </div>
             )}
