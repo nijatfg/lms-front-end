@@ -13,6 +13,7 @@ import ManageCourse from "./Components/Course/ManageCourse";
 import ManageUsers from "./Components/User/ManageUsers";
 import ManageGroup from "./Components/Group/ManageGroup";
 import ManageLessons from "./Components/Lesson/ManageLessons";
+import ChangePassword from "./Components/Password/ChangePassword";
 
 function App() {
     const [userState, setUserState] = useState({});
@@ -68,6 +69,7 @@ function App() {
                     <Route path="/dashboard/courses" element={<ManageCourse/>}></Route>
                     <Route path="/dashboard/groups" element={<ManageGroup/>}></Route>
                     <Route path="/dashboard/lessons" element={<ManageLessons/>}></Route>
+                    <Route path="/changePassword" element={<ChangePassword/>}/>
                 </Routes>
             </Router>
         </div>
