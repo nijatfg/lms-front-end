@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import "./GetMaterial.css"
+import './GetMaterial.css';
 
 const GetMaterialComponent = () => {
     const [materials, setMaterials] = useState([]);
@@ -47,6 +47,12 @@ const GetMaterialComponent = () => {
         }
     };
 
+    // Function to generate video URLs from references
+    const getVideoUrl = (videoReference) => {
+        // You should replace this URL generation logic with your actual video URL generation method
+        return `https://materiallmsbucket.s3.eu-north-1.amazonaws.com/${videoReference}`;
+    };
+
     return (
         <div className="get-material-container">
             <h2>Uploaded Materials</h2>
@@ -68,8 +74,29 @@ const GetMaterialComponent = () => {
                 ))}
                 </tbody>
             </table>
+            <div className="video-container">
+                <h3>Video Materials</h3>
+                <div className="videos-list">
+                    {materials.filter((material) => material.type === 'video').map((videoMaterial) => (
+                        <div key={videoMaterial.id} className="video-item">
+                            <video
+                                className="cld-video-player cld-fluid"
+                                controls
+                                autoPlay
+                                src={getVideoUrl(videoMaterial.content)}
+                                width={640}
+                                height={360}
+                            >
+                                Your browser does not support the video tag.
+                            </video>
+                            <p>{videoMaterial.title}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };
 
 export default GetMaterialComponent;
+

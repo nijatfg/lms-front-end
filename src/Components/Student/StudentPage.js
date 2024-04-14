@@ -6,9 +6,10 @@ import GetMaterialComponent from '../Material/GetMaterialComponent';
 import ViewAssignments from '../Assignment/ViewAssignments';
 import ViewGroupUsers from '../Group/ViewGroupUsers';
 import ChatRoom from '../Chat/ChatRoom';
+import HomePage from "./HomePage";
 
 const StudentPage = () => {
-    const [activeTab, setActiveTab] = useState('participationsStudent'); // Set the initial active tab
+    const [activeTab, setActiveTab] = useState('home'); // Set the initial active tab
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
@@ -16,12 +17,13 @@ const StudentPage = () => {
 
     return (
         <div className="dashboard-wrapper">
-            <nav className={`navbar-custom ${activeTab !== 'participationsStudent' ? 'sticky' : ''}`}>
+            <nav className={`navbar-custom ${activeTab !== 'home' ? 'sticky' : ''}`}>
                 <div className="nav-content">
                     <div className="logo">
-                        <a href="#home">Students</a>
+                        <a href="/student">Students</a>
                     </div>
-                    <ul className="nav-links">
+                    <ul className="nav-links-vertical">
+                        <li><a href="#home" className={activeTab === 'home' ? 'active' : ''} onClick={() => handleTabChange('home')}>Home</a></li>
                         <li><a href="#participationsStudent" className={activeTab === 'participationsStudent' ? 'active' : ''} onClick={() => handleTabChange('participationsStudent')}>Participation</a></li>
                         <li><a href="#getMaterials" className={activeTab === 'getMaterials' ? 'active' : ''} onClick={() => handleTabChange('getMaterials')}>Materials</a></li>
                         <li><a href="#assignments" className={activeTab === 'assignments' ? 'active' : ''} onClick={() => handleTabChange('assignments')}>Assignments</a></li>
@@ -36,6 +38,7 @@ const StudentPage = () => {
                 {activeTab === 'assignments' && <ViewAssignments />}
                 {activeTab === 'groups' && <ViewGroupUsers />}
                 {activeTab === 'chat' && <ChatRoom />}
+                {activeTab === 'home' && <HomePage />}
             </Container>
         </div>
     );

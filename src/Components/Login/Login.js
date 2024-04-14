@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import basestyle from "../Base.module.css";
 import loginstyle from "./Login.module.css";
 import axios from "axios";
 import { useNavigate, NavLink } from "react-router-dom";
@@ -19,7 +18,6 @@ const Login = ({ setUserState }) => {
             [name]: value,
         });
     };
-
     const loginHandler = async (e) => {
         e.preventDefault();
         try {
@@ -82,35 +80,46 @@ const Login = ({ setUserState }) => {
     };
 
     return (
-        <div className={loginstyle.login}>
-            <form>
-                <h1>Login</h1>
-                <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Email"
-                    onChange={changeHandler}
-                    value={user.email}
+        <div className={loginstyle.loginContainer}>
+            <div className={loginstyle.logoContainer}>
+                <img
+                    src="https://uiwjs.github.io/react-login-page/static/media/banner.a05effbe434b6c99458f.jpg"
+                    alt="Logo"
+                    className={loginstyle.logo}
                 />
-                <p className={basestyle.error}>{formErrors.email}</p>
-                <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="Password"
-                    onChange={changeHandler}
-                    value={user.password}
-                />
-                <p className={basestyle.error}>{formErrors.password}</p>
-                <button className={basestyle.button_common} onClick={loginHandler}>
-                    Login
-                </button>
-                {formErrors.message && (
-                    <p className={basestyle.error}>{formErrors.message}</p>
-                )}
-            </form>
-            <NavLink to="/signup">Not yet registered? Register Now</NavLink>
+            </div>
+            <div className={loginstyle.formContainer}>
+                <h3 className={loginstyle.formTitle}>Log in</h3>
+                <form className={loginstyle.form}>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="Email"
+                        onChange={changeHandler}
+                        value={user.email}
+                        className={loginstyle.input}
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Password"
+                        onChange={changeHandler}
+                        value={user.password}
+                        className={loginstyle.input}
+                    />
+                    <button className={loginstyle.loginButton} onClick={loginHandler}>
+                        Submit
+                    </button>
+                    {formErrors.message && (
+                        <p className={loginstyle.errorMessage}>{formErrors.message}</p>
+                    )}
+                </form>
+                {/*<NavLink to="/signup" className={loginstyle.registerLink}>*/}
+                {/*    Not yet registered? Register Now*/}
+                {/*</NavLink>*/}
+            </div>
         </div>
     );
 };

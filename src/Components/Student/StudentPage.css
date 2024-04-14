@@ -1,6 +1,4 @@
-/* Google Font Import Link */
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap');
-
+/* Global styles */
 * {
     margin: 0;
     padding: 0;
@@ -9,89 +7,85 @@
     font-family: 'Ubuntu', sans-serif;
 }
 
-nav {
+/* Navbar styles */
+.navbar-custom {
     position: fixed;
-    top: 0;
     left: 0;
-    width: 100%;
-    padding: 20px;
-    transition: all 0.4s ease;
-}
-
-nav.sticky {
-    padding: 15px 20px;
-    background: #4070f4;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-
-nav .nav-content {
+    top: 0;
     height: 100%;
-    max-width: 1200px;
-    margin: auto;
+    width: 150px; /* Adjust width as needed */
+    background-color: #fff; /* Navbar background color */
+    z-index: 1000;
+}
+
+.nav-content {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    padding: 20px;
 }
 
-nav .logo a {
+.logo a {
     font-weight: 500;
-    font-size: 35px;
+    font-size: 24px;
     color: #4070f4;
+    margin-bottom: 20px; /* Add space below the logo */
 }
 
-nav.sticky .logo a {
-    color: #fff;
-}
-
-.nav-content .nav-links {
-    display: flex;
-}
-
-.nav-content .nav-links li {
+.nav-links-vertical {
     list-style: none;
-    margin: 0 8px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
 }
 
-.nav-links li a {
-    text-decoration: none;
+.nav-links-vertical li {
+    margin-bottom: 70px; /* Add space between vertical links */
+}
+
+.nav-links-vertical a {
     color: #0E2431;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
-    padding: 10px 4px;
+    padding: 8px 12px;
+    border-radius: 5px;
     transition: all 0.3s ease;
 }
 
-.nav-links li a:hover {
+.nav-links-vertical a:hover {
     color: #4070f4;
+    background-color: rgba(64, 112, 244, 0.1);
 }
 
-nav.sticky .nav-links li a {
+/* Sticky navbar styles */
+.navbar-custom.sticky {
+    padding: 15px;
+    background-color: #4070f4;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-custom.sticky .logo a {
     color: #fff;
-    transition: all 0.4s ease;
 }
 
-nav.sticky .nav-links li a:hover {
+.navbar-custom.sticky .nav-links-vertical a {
+    color: #fff;
+}
+
+.navbar-custom.sticky .nav-links-vertical a:hover {
     color: #0E2431;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.home {
-    height: 100vh;
-    width: 100%;
-    /*background: url("images/background.png") no-repeat;*/
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    font-family: 'Ubuntu', sans-serif;
+/* Dashboard content styles */
+.dashboard-wrapper {
+    display: flex;
 }
 
-h2 {
-    font-size: 30px;
-    margin-bottom: 6px;
-    color: #4070f4;
-}
-
-.text {
-    text-align: justify;
-    padding: 40px 80px;
-    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1);
+.dashboard-content {
+    flex: 1;
+    margin-left: 200px; /* Adjust margin to match navbar width */
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: calc(100vh - 80px);
 }
