@@ -73,13 +73,6 @@ const ManageAssignments = () => {
                 <input type="text" value={submissionRequirements}
                        onChange={(e) => setSubmissionRequirements(e.target.value)}/>
             </div>
-            <div>
-                <label>Select Group:</label>
-                <select value={selectedGroupId} onChange={(e) => setSelectedGroupId(e.target.value)}>
-                    <option value="">Select a Group</option>
-                    {/* You can add your groups here */}
-                </select>
-            </div>
             <button onClick={handleCreateAssignment}>Create Assignment</button>
 
             <h3>Assignments List</h3>

@@ -1,12 +1,17 @@
 /* ManageLessons.css */
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .manage-lessons-container {
-    max-width: 600px;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #f8f9fa;
+    min-width: 1200px;
 }
 
 .lesson-form input[type="text"],

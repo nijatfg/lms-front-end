@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import "./UploadMaterial.css"
 
@@ -115,22 +115,22 @@ const UploadMaterialComponent = () => {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Title:</label>
-                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required/>
                 </div>
                 <div>
                     <label>Type:</label>
-                    <input type="text" value={type} onChange={(e) => setType(e.target.value)} required />
+                    <input type="text" value={type} onChange={(e) => setType(e.target.value)} required/>
                 </div>
                 <div>
                     <label>Content:</label>
-                    <input type="text" value={content} onChange={(e) => setContent(e.target.value)} required />
+                    <input type="text" value={content} onChange={(e) => setContent(e.target.value)} required/>
                 </div>
                 <div>
-                    <input type="hidden" value={groupId} />
+                    <input type="hidden" value={groupId}/>
                 </div>
                 <div>
                     <label>File:</label>
-                    <input type="file" onChange={(e) => setFile(e.target.files[0])} required />
+                    <input type="file" onChange={(e) => setFile(e.target.files[0])} required/>
                 </div>
                 <button type="submit">Upload</button>
 
@@ -156,7 +156,7 @@ const UploadMaterialComponent = () => {
             </form>
 
             <h2>Uploaded Materials</h2>
-            <ul>
+            <ul className="uploaded-materials-list">
                 {materials.map((material) => (
                     <li key={material.id}>
                         <strong>Title: {material.title}</strong>
@@ -165,11 +165,10 @@ const UploadMaterialComponent = () => {
                         <p>Group ID: {material.groupId}</p>
                         <p
                             onClick={() => handleDownload(material.content)}
-                            style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}
+                            className="download-link"
                         >
                             {material.content}
                         </p>
-                        {/* Add more details as needed */}
                     </li>
                 ))}
             </ul>

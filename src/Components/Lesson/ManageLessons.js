@@ -86,9 +86,9 @@ const ManageLessons = () => {
     };
 
     return (
-        <div className="manage-lesson-container"> {/* Apply custom CSS class */}
-            <h2>Manage Courses</h2>
-            <button className="btn btn-primary" onClick={toggleAddLessonForm}>Add Course</button>
+        <div className="manage-lessons-container"> {/* Apply custom CSS class */}
+            <h2>Manage Lessons</h2>
+            <button className="btn btn-primary" onClick={toggleAddLessonForm}>Add Lesson</button>
             {showAddLessonForm && (
                 <form className="lesson-form">
                     {/* Apply custom CSS class */}

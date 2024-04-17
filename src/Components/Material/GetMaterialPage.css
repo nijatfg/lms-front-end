@@ -17,6 +17,7 @@
     padding: 20px; /* Add some padding around the cubes */
     box-sizing: border-box; /* Ensure padding doesn't affect width */
     overflow: hidden; /* Added overflow property */
+
 }
 
 /* Cube group styles */

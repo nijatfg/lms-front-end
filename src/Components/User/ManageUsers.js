@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import './ManageUsers.css';
 
@@ -11,6 +11,8 @@ const ManageUsers = () => {
         password: '',
         authority: 'STUDENT',
         groupName: '',
+        firstName: '',
+        lastName: ''
     });
     const [showAddUserForm, setShowAddUserForm] = useState(false);
 
@@ -28,7 +30,7 @@ const ManageUsers = () => {
             }
 
             const response = await axios.get('http://localhost:8080/api/v1/users', {
-                headers: { Authorization: `Bearer ${jwtToken}` },
+                headers: {Authorization: `Bearer ${jwtToken}`},
             });
             setUsers(response.data);
             console.log(response.data)
@@ -46,7 +48,7 @@ const ManageUsers = () => {
             }
 
             const response = await axios.get('http://localhost:8080/api/v1/groups', {
-                headers: { Authorization: `Bearer ${jwtToken}` },
+                headers: {Authorization: `Bearer ${jwtToken}`},
             });
             setGroups(response.data);
         } catch (error) {
@@ -55,7 +57,7 @@ const ManageUsers = () => {
     };
 
     const handleInputChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({...formData, [e.target.name]: e.target.value});
     };
 
     const createUser = async () => {
@@ -67,7 +69,7 @@ const ManageUsers = () => {
             }
 
             const response = await axios.post(`http://localhost:8080/api/v1/users/groups/${formData.groupName}`, formData, {
-                headers: { Authorization: `Bearer ${jwtToken}` },
+                headers: {Authorization: `Bearer ${jwtToken}`},
             });
             console.log('User created:', response.data);
             fetchUsers();
@@ -101,6 +103,21 @@ const ManageUsers = () => {
             {showAddUserForm && (
                 <form className="user-form">
                     {/* Input fields for adding a new user */}
+
+                    <input
+                        type="text"
+                        name="firstName"
+                        placeholder="FirstName"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        type="text"
+                        name="lastName"
+                        placeholder="LastName"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                    />
                     <input
                         type="text"
                         name="username"
@@ -148,6 +165,8 @@ const ManageUsers = () => {
                     <thead>
                     <tr>
                         <th>#</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
                         <th>Username</th>
                         <th>Email</th>
                         <th>Authority</th>
@@ -159,10 +178,13 @@ const ManageUsers = () => {
                     {users.map((user, index) => (
                         <tr key={user.id}>
                             <td>{index + 1}</td>
+                            <td>{user.firstName}</td>
+                            <td>{user.lastName}</td>
                             <td>{user.username}</td>
                             <td>{user.email}</td>
                             <td>{user.authorities[0].authority}</td>
-                            <td>{user.group ? user.group.name : 'N/A'}</td> {/* Check if user.group exists */}
+                            <td>{user.group ? user.group.name : 'N/A'}</td>
+                            {/* Check if user.group exists */}
                             <td>
                                 {/*<button className="btn btn-primary" onClick={() => editUser(user)}>Edit</button>*/}
                                 {/*<button className="btn btn-danger" onClick={() => deleteUser(user.id)}>Delete</button>*/}

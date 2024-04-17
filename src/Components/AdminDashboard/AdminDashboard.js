@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Container, Nav } from 'react-bootstrap';
 import ManageCourse from '../Course/ManageCourse';
 import ManageGroup from '../Group/ManageGroup';
 import ManageUsers from '../User/ManageUsers';
@@ -14,18 +14,28 @@ const AdminDashboard = () => {
     };
 
     return (
-        <div className="admin-dashboard">
-            <Navbar bg="dark" variant="dark" className="navbar">
-                <Container>
-                    <Navbar.Brand href="#home">Admin Dashboard</Navbar.Brand>
-                    <Nav className="ml-auto">
-                        <Nav.Link onClick={() => handleTabChange('users')} className={activeTab === 'users' ? 'active' : ''}>Users</Nav.Link>
-                        <Nav.Link onClick={() => handleTabChange('courses')} className={activeTab === 'courses' ? 'active' : ''}>Courses</Nav.Link>
-                        <Nav.Link onClick={() => handleTabChange('groups')} className={activeTab === 'groups' ? 'active' : ''}>Groups</Nav.Link>
-                        <Nav.Link onClick={() => handleTabChange('lessons')} className={activeTab === 'lessons' ? 'active' : ''}>Lessons</Nav.Link>
-                    </Nav>
-                </Container>
-            </Navbar>
+        <div className="dashboard-wrapper">
+            <div className="navbar-custom">
+                <div className="nav-content">
+                    <div className="logo">
+                        <a href="/dashboard">Admin Dashboard</a>
+                    </div>
+                    <ul className="nav-links-vertical">
+                        <li>
+                            <a href="#users" className={activeTab === 'users' ? 'active' : ''} onClick={() => handleTabChange('users')}>Users</a>
+                        </li>
+                        <li>
+                            <a href="#courses" className={activeTab === 'courses' ? 'active' : ''} onClick={() => handleTabChange('courses')}>Courses</a>
+                        </li>
+                        <li>
+                            <a href="#groups" className={activeTab === 'groups' ? 'active' : ''} onClick={() => handleTabChange('groups')}>Groups</a>
+                        </li>
+                        <li>
+                            <a href="#lessons" className={activeTab === 'lessons' ? 'active' : ''} onClick={() => handleTabChange('lessons')}>Lessons</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <Container className="dashboard-content">
                 {activeTab === 'users' && <ManageUsers />}
                 {activeTab === 'courses' && <ManageCourse />}

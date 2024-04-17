@@ -5,8 +5,8 @@ import "./ViewGroupUsers.css";
 const ViewGroupUsers = () => {
     const [users, setUsers] = useState([]);
     const [showUsers, setShowUsers] = useState(false);
-    const [groupName, setGroupName] = useState(''); // State to store the group name
-    const groupId = localStorage.getItem('groupId'); // Get groupId from local storage
+    const [groupName, setGroupName] = useState('');
+    const groupId = localStorage.getItem('groupId');
     const token = localStorage.getItem("jwtToken");
 
     useEffect(() => {
@@ -14,7 +14,7 @@ const ViewGroupUsers = () => {
             fetchGroupInfo(groupId);
             fetchUsersByGroup(groupId);
         }
-    }, [groupId]); // Fetch group info and users when groupId changes
+    }, [groupId]);
 
     const fetchGroupInfo = async (groupId) => {
         try {
@@ -55,8 +55,11 @@ const ViewGroupUsers = () => {
             {showUsers && (
                 <ul className="users-list">
                     {users.filter(user => user.authorities[0].authority === 'STUDENT').map(user => (
-                        <li key={user.id}>
-                            <p>{user.username}</p>
+                        <li key={user.id} className="user-item">
+                            <div className="user-info">
+                                <p className="username">{user.firstName}</p>
+                                <p className="email">{user.email}</p>
+                            </div>
                         </li>
                     ))}
                 </ul>

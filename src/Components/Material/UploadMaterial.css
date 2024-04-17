@@ -1,6 +1,6 @@
 .upload-material-container {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    max-width: 1000px;
+    min-width: 1000px;
     margin: 0 auto;
     padding: 8px; /* Decreased padding to reduce height */
     background-color: #f0f0f0;
@@ -83,64 +83,38 @@
     padding: 0;
 }
 
-.upload-material-container ul li {
-    margin-bottom: 8px; /* Reduced margin bottom */
-    padding: 10px; /* Reduced padding */
-    background-color: #fff;
-    border-radius: 6px;
+.uploaded-materials-list li {
+    margin-bottom: 16px; /* Increased margin bottom for better spacing */
+    padding: 12px; /* Increased padding for better visual separation */
+    background-color: #f8f8f8; /* Lighter background color */
+    border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease; /* Added transition for hover effect */
+    transition: transform 0.3s ease;
 }
 
-.upload-material-container ul li:hover {
-    transform: translateY(-5px); /* Increased hover effect */
+.uploaded-materials-list li:hover {
+    transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.upload-material-container ul li strong {
-    font-size: 18px; /* Reduced font size */
+.uploaded-materials-list li strong {
+    font-size: 18px;
     color: #333;
     display: block;
-    margin-bottom: 8px; /* Reduced margin bottom */
+    margin-bottom: 8px;
 }
 
-.upload-material-container ul li p {
+.uploaded-materials-list li p {
     color: #555;
-    margin-bottom: 4px; /* Reduced margin bottom */
+    margin-bottom: 4px;
 }
 
-.upload-material-container ul li p:last-child {
-    margin-bottom: 8px; /* Reduced margin bottom */
+.uploaded-materials-list li p:last-child {
+    margin-bottom: 8px;
 }
 
-.upload-material-container ul li p:hover {
+.uploaded-materials-list li .download-link {
     color: #007bff;
     cursor: pointer;
     text-decoration: underline;
-}
-
-/* Circular progress bar styles */
-.progress-container {
-    position: relative;
-    width: 100px; /* Adjust size as needed */
-    height: 100px; /* Adjust size as needed */
-}
-
-.progress-ring {
-    fill: none;
-    stroke: #007bff; /* Progress bar color */
-    stroke-width: 8px; /* Progress bar thickness */
-    stroke-linecap: round;
-    stroke-dasharray: 314; /* Circumference of a circle with radius 50 */
-    stroke-dashoffset: 314; /* Start with full circle */
-    transition: stroke-dashoffset 0.3s ease; /* Smooth transition for progress update */
-}
-
-.progress-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
-    color: #333;
 }

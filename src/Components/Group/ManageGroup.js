@@ -93,11 +93,11 @@ const ManageGroup = () => {
                         onChange={handleInputChange}
                     />
                     <select
-                        name="groupName"
+                        name="courseName"
                         value={formData.courseName}
                         onChange={handleInputChange}
                     >
-                        <option value="">Select Group</option>
+                        <option value="">Select Course</option>
                         {courses.map(course => (
                             <option key={course.id} value={course.name}>{course.name}</option>
                         ))}

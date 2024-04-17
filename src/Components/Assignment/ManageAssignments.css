@@ -1,38 +1,45 @@
+/* Updated .manage-assignments-container CSS */
+
 .manage-assignments-container {
     font-family: 'Roboto', sans-serif;
-    max-width: 1200px; /* Increased max-width for better readability */
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
+    margin: 50px auto; /* Increased margin for more space around the container */
+    padding: 40px; /* Increased padding for better spacing */
+    background-color: #ffffff; /* Updated background color for a clean look */
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 700px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Increased box shadow for depth */
     overflow-y: auto; /* Add scrollbar if content exceeds container height */
+    width: 95%; /* Increased width for more spacious appearance */
+    min-width: 1000px; /* Added min-width for larger screens */
+    height: 80vh; /* Increased height to make the container appear larger */
 }
 
+/* Updated styles for headings and labels */
+
 .manage-assignments-container h2 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #333;
+    font-size: 32px; /* Increased font size for headings */
+    margin-bottom: 30px; /* Increased margin for better spacing */
+    color: #333333; /* Adjusted text color for readability */
     text-align: center;
 }
 
 .manage-assignments-container label {
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #555;
+    font-weight: 600; /* Increased font weight for labels */
+    margin-bottom: 12px; /* Adjusted margin for better spacing */
+    color: #555555; /* Adjusted text color for labels */
     display: block;
 }
+
+/* Updated styles for input fields, text areas, and buttons */
 
 .manage-assignments-container input[type="text"],
 .manage-assignments-container textarea,
 .manage-assignments-container input[type="date"],
 .manage-assignments-container select {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    padding: 14px; /* Increased padding for input fields */
+    margin-bottom: 24px; /* Increased margin for better spacing */
+    border: 1px solid #cccccc; /* Adjusted border color for input fields */
+    border-radius: 8px; /* Increased border radius for smoother edges */
     box-sizing: border-box;
     transition: border-color 0.3s ease;
 }
@@ -41,15 +48,15 @@
 .manage-assignments-container textarea:focus,
 .manage-assignments-container input[type="date"]:focus,
 .manage-assignments-container select:focus {
-    border-color: #007bff;
+    border-color: #007bff; /* Updated border color on focus for better visibility */
 }
 
 .manage-assignments-container button {
-    padding: 12px 24px;
+    padding: 14px 28px; /* Increased padding for buttons */
     background-color: #007bff;
-    color: #fff;
+    color: #ffffff;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -58,22 +65,24 @@
     background-color: #0056b3;
 }
 
+/* Updated styles for list items */
+
 .manage-assignments-container ul {
     list-style-type: none;
     padding: 0;
-    margin-top: 20px;
+    margin-top: 30px; /* Increased margin for better spacing */
 }
 
 .manage-assignments-container ul li {
-    border-bottom: 1px solid #ccc;
-    padding: 15px 0;
+    border-bottom: 1px solid #cccccc; /* Adjusted border color for list items */
+    padding: 20px 0; /* Increased padding for list items */
 }
 
 .manage-assignments-container ul li:last-child {
-    border-bottom: none;
+    border-bottom: none; /* Removed border bottom for last list item */
 }
 
 .manage-assignments-container ul li p {
-    margin: 5px 0;
-    color: #333;
+    margin: 8px 0; /* Adjusted margin for better spacing */
+    color: #333333; /* Adjusted text color for list items */
 }

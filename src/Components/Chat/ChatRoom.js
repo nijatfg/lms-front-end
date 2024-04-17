@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import "./ChatRoom.css";
@@ -46,7 +46,7 @@ const ChatRoom = () => {
         if (selectedUserId && selectedUserId === message.senderId) {
             setChatArea(prevChatArea => [
                 ...prevChatArea,
-                { senderId: message.senderId, content: message.content }
+                {senderId: message.senderId, content: message.content}
             ]);
         }
 
@@ -121,7 +121,7 @@ const ChatRoom = () => {
                 return;
             }
 
-            setChatArea(userChatResponse.data.map(chat => ({ senderId: chat.senderId, content: chat.content })));
+            setChatArea(userChatResponse.data.map(chat => ({senderId: chat.senderId, content: chat.content})));
         } catch (error) {
             console.error('Error fetching and displaying user chat:', error);
         }
@@ -137,7 +137,7 @@ const ChatRoom = () => {
                 timestamp: new Date()
             };
             stompClient.send("/app/chat", {}, JSON.stringify(chatMessage));
-            setChatArea([...chatArea, { senderId: username, content: messageInput.trim() }]);
+            setChatArea([...chatArea, {senderId: username, content: messageInput.trim()}]);
             setMessageInput('');
         }
     };
@@ -183,7 +183,7 @@ const ChatRoom = () => {
                 </div>
                 <form className="message-input" onSubmit={sendMessage}>
                     <input type="text" id="message" placeholder="Type your message..." value={messageInput}
-                           onChange={(e) => setMessageInput(e.target.value)} />
+                           onChange={(e) => setMessageInput(e.target.value)}/>
                     <button type="submit">Send</button>
                 </form>
             </div>

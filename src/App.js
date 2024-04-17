@@ -14,6 +14,12 @@ import ManageUsers from "./Components/User/ManageUsers";
 import ManageGroup from "./Components/Group/ManageGroup";
 import ManageLessons from "./Components/Lesson/ManageLessons";
 import ChangePassword from "./Components/Password/ChangePassword";
+import GetMaterialComponent from "./Components/Material/GetMaterialComponent";
+import ViewAssignments from "./Components/Assignment/ViewAssignments";
+import ViewGroupUsers from "./Components/Group/ViewGroupUsers";
+import ChatRoom from "./Components/Chat/ChatRoom";
+import ParticipationComponentStudent from "./Components/Participation/ParticipationComponentStudent";
+import GetMaterialPage from "./Components/Material/GetMaterialPage";
 
 function App() {
     const [userState, setUserState] = useState({});
@@ -58,7 +64,7 @@ function App() {
                         element={<AdminDashboard setUserState={setUserState}/>}
                     />
                     <Route
-                        path="/participation"
+                        path="/teacher/participation"
                         element={<ParticipationComponent userId={userState._id}/>}
                     />
                     <Route path="/teacher" element={<TeacherPage/>}/>
@@ -70,6 +76,12 @@ function App() {
                     <Route path="/dashboard/groups" element={<ManageGroup/>}></Route>
                     <Route path="/dashboard/lessons" element={<ManageLessons/>}></Route>
                     <Route path="/changePassword" element={<ChangePassword/>}/>
+                    <Route path="/student/materials" element={<GetMaterialPage/>}/>
+                    <Route path="/student/materials/files" element={<GetMaterialComponent/>}/>
+                    <Route path="/student/assignments" element={<ViewAssignments/>}/>
+                    <Route path="/student/group" element={<ViewGroupUsers/>}/>
+                    <Route path="/student/chat" element={<ChatRoom/>}/>
+                    <Route path="/student/participation" element={<ParticipationComponentStudent/>}/>
                 </Routes>
             </Router>
         </div>

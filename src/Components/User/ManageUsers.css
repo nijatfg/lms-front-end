@@ -1,6 +1,7 @@
 .manage-users-container {
     padding: 20px;
     overflow: hidden; /* Prevent content overflow */
+    min-width: 1000px;
 }
 
 .table-title {

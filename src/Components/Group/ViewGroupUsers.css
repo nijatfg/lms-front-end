@@ -1,8 +1,10 @@
+/* ViewGroupUsers.css */
+
 .group-users-container {
     padding: 10px;
     background-color: #f8f9fa;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     min-height: 100px;
 }
@@ -12,15 +14,24 @@
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
 }
 
 .group-users-header h2 {
-    font-size: 18px;
+    font-size: 20px;
     margin: 0;
 }
 
 .group-users-header p {
     margin: 0;
+    color: #6c757d;
+}
+.username {
+    color: #6c757d
 }
 
 .users-list {
@@ -28,14 +39,39 @@
     padding: 0;
 }
 
-.users-list li {
-    margin-bottom: 10px;
+.users-list .user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px;
     background-color: #ffffff;
-    border-radius: 5px;
+    border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
 }
 
-.users-list li p {
-    margin: 5px 0;
+.user-info {
+    flex-grow: 1;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.email {
+    color: #6c757d;
+}
+
+.action-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+    background-color: #0056b3;
 }

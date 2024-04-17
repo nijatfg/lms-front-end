@@ -1,19 +1,20 @@
 /* Container styles */
 .get-material-container {
     padding: 20px;
-    background-color: #fff; /* White background */
+    background-color: #0F172AE6; /* Updated background color */
     border-radius: 10px;
     margin: 20px auto; /* Center the container horizontally */
     min-height: 500px; /* Set a minimum height */
     min-width: 1300px;
     box-shadow: 0 4px 8px rgba(0, 0, 255, 0.1); /* Blue shadow */
+    color: #fff; /* White text color */
 }
 
 /* Heading styles */
 .get-material-container h2 {
     font-size: 24px;
     margin-bottom: 20px;
-    color: #007bff; /* Blue text color */
+    color: #fff; /* White text color */
 }
 
 /* Table styles */
@@ -38,7 +39,7 @@
 }
 
 .get-material-container tbody tr:hover {
-    background-color: #e8f0fe; /* Light blue background on hover */
+    background-color: rgba(0, 0, 255, 0.1);;
     transition: background-color 0.3s ease;
 }
 
@@ -53,4 +54,47 @@
 .get-material-container .download-link:hover {
     color: #0056b3; /* Darker blue on hover */
     transform: translateY(-1px);
+}
+
+/* Video container styles */
+.video-container {
+    margin-top: 40px; /* Increase space between the table and videos */
+}
+
+/* Video item styles */
+.video-item {
+    background-color: #f9f9f9; /* Light background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+    margin-bottom: 20px; /* Space between video items */
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px; /* Padding around video item */
+    cursor: pointer;
+}
+
+.video-item:hover {
+    transform: translateY(-3px); /* Lift the video item on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow on hover */
+}
+
+.video-title {
+    font-size: 20px; /* Larger font size for the video title */
+    margin-bottom: 10px; /* Slightly reduce margin */
+    color: #333; /* Dark text color */
+}
+
+.video-description {
+    font-size: 16px; /* Increase font size for description */
+    color: #666; /* Medium gray text color */
+    margin-bottom: 12px; /* Adjust margin for better spacing */
+}
+
+/* Video player styles */
+.cld-video-player {
+    border-radius: 8px; /* Add border radius to the video player */
+    overflow: hidden; /* Hide any overflow content */
+}
+
+.cld-video-player:focus {
+    outline: none; /* Remove outline when video player is focused */
 }

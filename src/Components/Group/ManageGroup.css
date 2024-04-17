@@ -7,6 +7,7 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f8f9fa;
+    min-width: 1000px;
 }
 
 .group-form input[type="text"],
