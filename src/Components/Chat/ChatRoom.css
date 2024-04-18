@@ -24,7 +24,7 @@ body {
     border-radius: 8px;
 }
 
-.users-list {
+.users-list-chat {
     flex: 1;
     border-right: 1px solid #ccc;
     padding: 20px;
@@ -43,12 +43,12 @@ body {
     overflow-y: scroll;
 }
 
-.users-list h2 {
+.users-list-chat h2 {
     font-size: 1.5rem;
     margin-bottom: 10px;
 }
 
-.users-list ul {
+.users-list-chat ul {
     list-style: none;
     padding: 0;
     margin: 0;

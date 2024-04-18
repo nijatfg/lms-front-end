@@ -20,6 +20,7 @@ import ViewGroupUsers from "./Components/Group/ViewGroupUsers";
 import ChatRoom from "./Components/Chat/ChatRoom";
 import ParticipationComponentStudent from "./Components/Participation/ParticipationComponentStudent";
 import GetMaterialPage from "./Components/Material/GetMaterialPage";
+import TaskDetails from "./Components/Assignment/TaskDetails";
 
 function App() {
     const [userState, setUserState] = useState({});
@@ -82,6 +83,7 @@ function App() {
                     <Route path="/student/group" element={<ViewGroupUsers/>}/>
                     <Route path="/student/chat" element={<ChatRoom/>}/>
                     <Route path="/student/participation" element={<ParticipationComponentStudent/>}/>
+                    <Route path="/task-details/:assignmentId" element={<TaskDetails />} />
                 </Routes>
             </Router>
         </div>

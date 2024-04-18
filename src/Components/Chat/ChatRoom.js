@@ -154,7 +154,7 @@ const ChatRoom = () => {
 
     return (
         <div className="chat-container">
-            <div className="users-list">
+            <div className="users-list-chat">
                 <div className="users-list-container">
                     <h2>Online Users</h2>
                     <ul>

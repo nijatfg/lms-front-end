@@ -4,7 +4,7 @@ import "./ViewGroupUsers.css";
 
 const ViewGroupUsers = () => {
     const [users, setUsers] = useState([]);
-    const [showUsers, setShowUsers] = useState(false);
+    const [showUsers, setShowUsers] = useState(true); // Set default value to true
     const [groupName, setGroupName] = useState('');
     const groupId = localStorage.getItem('groupId');
     const token = localStorage.getItem("jwtToken");
@@ -16,6 +16,10 @@ const ViewGroupUsers = () => {
         }
     }, [groupId]);
 
+    useEffect(() => {
+        localStorage.setItem('showUsers', showUsers);
+    }, [showUsers]);
+
     const fetchGroupInfo = async (groupId) => {
         try {
             const response = await axios.get(`http://localhost:8080/api/v1/groups/${groupId}`, {
@@ -24,6 +28,7 @@ const ViewGroupUsers = () => {
                 },
             });
             setGroupName(response.data.name);
+            console.log(response.data.name)
         } catch (error) {
             console.error('Error fetching group info:', error);
         }
@@ -37,29 +42,32 @@ const ViewGroupUsers = () => {
                 },
             });
             setUsers(response.data);
+            console.log(response.data)
         } catch (error) {
             console.error('Error fetching users by group ID:', error);
         }
     };
 
-    const toggleUsersList = () => {
-        setShowUsers(!showUsers);
-    };
-
     return (
         <div className="group-users-container">
-            <div className="group-users-header" onClick={toggleUsersList}>
-                <h2>{groupName}</h2>
-                <p>{users.filter(user => user.authorities[0].authority === 'STUDENT').length} Students</p>
-            </div>
             {showUsers && (
-                <ul className="users-list">
-                    {users.filter(user => user.authorities[0].authority === 'STUDENT').map(user => (
+                <ul className="users-list-group">
+                    <li className="list-title">TEACHERS</li>
+                    {users.filter(user => user.authorities[0].authority === 'TEACHER').map((user, index) => (
                         <li key={user.id} className="user-item">
                             <div className="user-info">
-                                <p className="username">{user.firstName}</p>
-                                <p className="email">{user.email}</p>
+                                <p className="teacher">{`${user.firstName} ${user.lastName}`}</p>
                             </div>
+                            <hr className="line-separator"/>
+                        </li>
+                    ))}
+                    <li className="list-title">STUDENTS</li>
+                    {users.filter(user => user.authorities[0].authority === 'STUDENT').map((user, index) => (
+                        <li key={user.id} className="user-item">
+                            <div className="user-info">
+                                <p className="student">{`${user.firstName} ${user.lastName}`}</p>
+                            </div>
+                            <hr className="line-separator"/>
                         </li>
                     ))}
                 </ul>
