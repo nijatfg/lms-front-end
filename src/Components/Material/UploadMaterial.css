@@ -1,50 +1,57 @@
+/* Main container */
 .upload-material-container {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-width: 1000px;
+    width: 80%;
     margin: 0 auto;
-    padding: 8px; /* Decreased padding to reduce height */
-    background-color: #f0f0f0;
+    padding: 20px;
+    background-color: #f5f5f5;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: auto; /* Add scrollbar if content exceeds container height */
-    height: 700px; /* Adjusted height */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Headings */
 .upload-material-container h2 {
-    font-size: 24px; /* Reduced font size */
-    margin-bottom: 10px; /* Reduced margin bottom */
+    font-size: 24px;
+    margin-bottom: 10px;
     color: #333;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 1px; /* Reduced letter spacing */
+    letter-spacing: 1px;
 }
 
+/* Form inputs container */
 .upload-material-container form div {
-    margin-bottom: 8px; /* Reduced margin bottom */
+    margin-bottom: 20px;
 }
 
+/* Labels */
 .upload-material-container form label {
     font-weight: bold;
     color: #555;
+    display: block;
+    margin-bottom: 5px;
 }
 
+/* Text and file inputs */
 .upload-material-container form input[type="text"],
 .upload-material-container form input[type="file"] {
-    width: calc(100% - 24px); /* Adjusted width to accommodate padding and borders */
-    padding: 10px; /* Reduced padding */
+    width: calc(100% - 20px);
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     transition: border-color 0.3s ease;
-    background-color: #f8f8f8;
+    background-color: #fff;
 }
 
+/* Focus styles for inputs */
 .upload-material-container form input[type="text"]:focus,
 .upload-material-container form input[type="file"]:focus {
     border-color: #007bff;
 }
 
+/* Submit button */
 .upload-material-container form button[type="submit"] {
-    padding: 10px 18px;
+    padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -53,68 +60,149 @@
     transition: background-color 0.3s ease;
 }
 
+/* Hover effect for submit button */
 .upload-material-container form button[type="submit"]:hover {
     background-color: #0056b3;
 }
 
-/* Style for the "Choose File" button in the upload form */
-.upload-material-container form input[type="file"] {
-    position: relative;
-    overflow: hidden;
+/* Circular progress bar container */
+.progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 
-.upload-material-container form input[type="file"]::before {
-    content: 'Choose File';
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+/* SVG progress bar */
+.progress-ring {
+    width: 100px;
+    height: 100px;
 }
 
-.upload-material-container form input[type="file"]:hover::before {
-    background-color: #0056b3;
+.progress-ring-circle {
+    stroke: #007bff;
+    stroke-width: 8;
+    fill: transparent;
+    transition: stroke-dashoffset 0.3s ease;
 }
 
-.upload-material-container ul {
+/* Progress text */
+.progress-text {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+/* Uploaded materials list */
+.uploaded-materials-list {
     list-style-type: none;
     padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    max-height: 400px; /* Set max-height for the container */
+    overflow-y: auto; /* Enable vertical scrolling */
 }
 
+/* Individual material item */
 .uploaded-materials-list li {
-    margin-bottom: 16px; /* Increased margin bottom for better spacing */
-    padding: 12px; /* Increased padding for better visual separation */
-    background-color: #f8f8f8; /* Lighter background color */
+    background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
+    overflow: hidden;
 }
 
+/* Hover effect for material item */
 .uploaded-materials-list li:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Material title */
 .uploaded-materials-list li strong {
-    font-size: 18px;
-    color: #333;
     display: block;
-    margin-bottom: 8px;
+    font-size: 16px;
+    color: #333;
+    margin: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
+/* Material type and content */
 .uploaded-materials-list li p {
+    font-size: 14px;
     color: #555;
-    margin-bottom: 4px;
+    margin: 5px 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.uploaded-materials-list li p:last-child {
-    margin-bottom: 8px;
-}
-
+/* Download link */
 .uploaded-materials-list li .download-link {
+    font-size: 14px;
     color: #007bff;
     cursor: pointer;
     text-decoration: underline;
+    margin: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Uploaded materials table */
+.uploaded-materials-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.uploaded-materials-table th,
+.uploaded-materials-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.uploaded-materials-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+.uploaded-materials-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.uploaded-materials-table tbody tr:hover {
+    background-color: #e9e9e9;
+}
+
+.download-button {
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+    background-color: #0056b3;
+}
+
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .uploaded-materials-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .uploaded-materials-list li strong,
+    .uploaded-materials-list li p,
+    .uploaded-materials-list li .download-link {
+        font-size: 12px;
+        margin: 5px;
+    }
 }

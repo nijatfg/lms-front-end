@@ -21,6 +21,9 @@ import ChatRoom from "./Components/Chat/ChatRoom";
 import ParticipationComponentStudent from "./Components/Participation/ParticipationComponentStudent";
 import GetMaterialPage from "./Components/Material/GetMaterialPage";
 import TaskDetails from "./Components/Assignment/TaskDetails";
+import UploadMaterialComponent from "./Components/Material/UploadMaterialComponent";
+import ManageAssignments from "./Components/Assignment/ManageAssignments";
+import TaskSubmission from "./Components/Submission/TaskSubmission";
 
 function App() {
     const [userState, setUserState] = useState({});
@@ -83,6 +86,12 @@ function App() {
                     <Route path="/student/group" element={<ViewGroupUsers/>}/>
                     <Route path="/student/chat" element={<ChatRoom/>}/>
                     <Route path="/student/participation" element={<ParticipationComponentStudent/>}/>
+                    <Route path="/teacher/participation" element={<ParticipationComponent/>}/>
+                    <Route path="/teacher/material" element={<UploadMaterialComponent/>}/>
+                    <Route path="/teacher/assignment" element={<ManageAssignments/>}/>
+                    <Route path="/teacher/submission" element={<TaskSubmission/>}/>
+                    <Route path="/teacher/group" element={<ViewGroupUsers/>}/>
+                    <Route path="/teacher/chat" element={<ChatRoom/>}/>
                     <Route path="/task-details/:assignmentId" element={<TaskDetails />} />
                 </Routes>
             </Router>

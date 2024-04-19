@@ -99,9 +99,9 @@ const TaskSubmission = () => {
                                                 <p>Content: {submission.content}</p>
                                                 <p>Link: {submission.link}</p>
                                                 <p>User: {submission.user.username}</p>
-                                                <p onClick={() => handleDownload(submission.content)} className="download-link">
-                                                    {submission.content}
-                                                </p>
+                                                <button onClick={() => handleDownload(submission.content)} className="download-button">
+                                                    Download
+                                                </button>
                                                 <button onClick={() => handleGradeSubmission(submission.id)}>Grade</button>
                                             </li>
                                         ))}

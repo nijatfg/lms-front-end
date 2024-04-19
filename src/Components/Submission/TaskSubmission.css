@@ -2,7 +2,8 @@
 
 .task-submission-container {
     font-family: 'Roboto', sans-serif;
-    max-width: 1000px;
+    width: 80%;
+    height: 100%;
     margin: 20px auto;
     padding: 20px;
     background-color: #f5f5f5;

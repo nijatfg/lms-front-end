@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import "./UploadMaterial.css"
+import "./UploadMaterial.css";
 
 const UploadMaterialComponent = () => {
     const [title, setTitle] = useState('');
@@ -56,9 +56,8 @@ const UploadMaterialComponent = () => {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-                responseType: 'blob', // Specify response type as blob
+                responseType: 'blob',
             });
-            // Create a blob URL for the file and open it in a new window
             const blobUrl = URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = blobUrl;
@@ -97,13 +96,12 @@ const UploadMaterialComponent = () => {
 
             const response = await axios.post('http://localhost:8080/api/v1/materials/upload', formData, config);
             console.log('Material uploaded:', response.data);
-            // Clear form fields after successful upload
             setTitle('');
             setType('');
             setContent('');
             setFile(null);
-            fetchMaterials(groupId); // Refresh materials list for the selected group
-            setProgress(0); // Reset progress after upload
+            fetchMaterials(groupId);
+            setProgress(0);
         } catch (error) {
             console.error('Error uploading material:', error);
         }
@@ -134,7 +132,6 @@ const UploadMaterialComponent = () => {
                 </div>
                 <button type="submit">Upload</button>
 
-                {/* Circular progress bar */}
                 <div className="progress-container">
                     <svg className="progress-ring" width="100" height="100">
                         <circle
@@ -156,22 +153,33 @@ const UploadMaterialComponent = () => {
             </form>
 
             <h2>Uploaded Materials</h2>
-            <ul className="uploaded-materials-list">
+            <table className="uploaded-materials-table">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Content</th>
+                    <th>Download</th>
+                </tr>
+                </thead>
+                <tbody>
                 {materials.map((material) => (
-                    <li key={material.id}>
-                        <strong>Title: {material.title}</strong>
-                        <p>Type: {material.type}</p>
-                        <p>Content: {material.content}</p>
-                        <p>Group ID: {material.groupId}</p>
-                        <p
-                            onClick={() => handleDownload(material.content)}
-                            className="download-link"
-                        >
-                            {material.content}
-                        </p>
-                    </li>
+                    <tr key={material.id}>
+                        <td>{material.title}</td>
+                        <td>{material.type}</td>
+                        <td>{material.content}</td>
+                        <td>
+                            <button
+                                onClick={() => handleDownload(material.content)}
+                                className="download-button"
+                            >
+                                Download
+                            </button>
+                        </td>
+                    </tr>
                 ))}
-            </ul>
+                </tbody>
+            </table>
         </div>
     );
 };
