@@ -51,7 +51,7 @@ const ParticipationComponent = ({userId}) => {
         }
     };
 
-    const markAttendance = async (lessonDate, studentId, isPresent) => {
+    const markAttendance = async (lessonDate, studentId, attendanceStatus) => {
         try {
             const token = localStorage.getItem('jwtToken'); // Get JWT token from localStorage
 
@@ -72,7 +72,7 @@ const ParticipationComponent = ({userId}) => {
                 `http://localhost:8080/api/v1/participation/markAttendance/${lessonId}/${studentId}/${groupId}`,
                 {
                     lessonDate: lessonDate,
-                    attendance: isPresent,
+                    attendance: attendanceStatus,
                 },
                 {
                     headers: {
@@ -89,7 +89,7 @@ const ParticipationComponent = ({userId}) => {
                     if (record.userId === studentId && record.date === lessonDate) {
                         return {
                             ...record,
-                            attendance: isPresent,
+                            attendance: attendanceStatus,
                         };
                     }
                     return record;
@@ -117,7 +117,6 @@ const ParticipationComponent = ({userId}) => {
             console.error('Error fetching participation records:', error);
         }
     };
-
 
     const handleViewRecords = async (studentName) => {
         try {
@@ -170,8 +169,10 @@ const ParticipationComponent = ({userId}) => {
                         <td>{student.username}</td>
                         <td>{student.group.name}</td>
                         <td>
-                            <button onClick={() => markAttendance(lessonDate, student.id, true)}>Attend</button>
-                            <button onClick={() => markAttendance(lessonDate, student.id, false)}>Absent</button>
+                            <button onClick={() => markAttendance(lessonDate, student.id, 'ATTEND')}>Attend</button>
+                            <button onClick={() => markAttendance(lessonDate, student.id, 'ABSENT')}>Absent</button>
+                            <button onClick={() => markAttendance(lessonDate, student.id, 'LATE')}>Late</button>
+                            <button onClick={() => markAttendance(lessonDate, student.id, 'ALLOWED')}>Allowed</button>
                             <button onClick={() => handleViewRecords(student.username)}>
                                 {showRecords ? 'Hide Records' : 'View Records'}
                             </button>
@@ -189,12 +190,13 @@ const ParticipationComponent = ({userId}) => {
                             <th>Date</th>
                             <th>Attendance Mark</th>
                         </tr>
-                        </thead>
+                        </
+                            thead>
                         <tbody>
                         {attendanceRecords.map((record) => (
                             <tr key={record.id}>
                                 <td>{record.lesson.date}</td>
-                                <td>{record.attendance ? 'Present' : 'Absent'}</td>
+                                <td>{record.attendance}</td>
                             </tr>
                         ))}
                         </tbody>
@@ -204,4 +206,7 @@ const ParticipationComponent = ({userId}) => {
         </div>
     );
 };
-export default ParticipationComponent
+
+export default ParticipationComponent;
+
+

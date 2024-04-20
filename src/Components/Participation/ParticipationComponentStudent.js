@@ -85,7 +85,7 @@ const ParticipationComponentStudent = () => {
                                 <tr key={record.id}>
                                     <td>{record.lesson.date}</td>
                                     <td>
-                                        {record.attendance ? 'Present' : 'Absent'}
+                                        {record.attendance}
                                     </td>
                                 </tr>
                             ))}
