@@ -127,7 +127,8 @@ const ChatRoom = () => {
         }
     };
 
-    const sendMessage = () => {
+    const sendMessage = (e) => {
+        e.preventDefault(); // Prevent default form submission behavior
         // Send a message through WebSocket
         if (messageInput.trim() && stompClient) {
             const chatMessage = {
