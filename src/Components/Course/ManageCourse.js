@@ -9,7 +9,7 @@ const ManageCourse = () => {
         description: '',
     });
     const [showAddCourseForm, setShowAddCourseForm] = useState(false); // State for showing/hiding the course form
-
+    const [editCourseId, setEditCourseId] = useState(null); // State for tracking the course being edited
 
     useEffect(() => {
         fetchCourses();
@@ -55,8 +55,54 @@ const ManageCourse = () => {
         }
     };
 
+    const editCourse = async () => {
+        try {
+            const jwtToken = localStorage.getItem('jwtToken');
+            if (!jwtToken) {
+                console.error('JWT token not found. Please log in again.');
+                return;
+            }
+
+            const response = await axios.put(`http://localhost:8080/api/v1/courses/${editCourseId}`, formData, {
+                headers: {Authorization: `Bearer ${jwtToken}`},
+            });
+            console.log('Course updated:', response.data);
+            fetchCourses();
+            setEditCourseId(null); // Reset editCourseId after updating
+        } catch (error) {
+            console.error("Error updating course:", error);
+        }
+    };
+
+    const deleteCourse = async (courseId) => {
+        try {
+            const jwtToken = localStorage.getItem('jwtToken');
+            if (!jwtToken) {
+                console.error('JWT token not found. Please log in again.');
+                return;
+            }
+
+            await axios.delete(`http://localhost:8080/api/v1/courses/${courseId}`, {
+                headers: {Authorization: `Bearer ${jwtToken}`},
+            });
+            console.log('Course deleted:', courseId);
+            fetchCourses();
+        } catch (error) {
+            console.error("Error deleting course:", error);
+        }
+    };
+
     const toggleAddCourseForm = () => {
         setShowAddCourseForm(!showAddCourseForm);
+        setFormData({name: '', description: ''}); // Reset form data when toggling form visibility
+    };
+
+    const toggleEditForm = (courseId) => {
+        const courseToEdit = courses.find(course => course.id === courseId);
+        if (courseToEdit) {
+            setEditCourseId(courseId);
+            setFormData({name: courseToEdit.name, description: courseToEdit.description});
+        }
     };
 
     return (
@@ -82,8 +128,27 @@ const ManageCourse = () => {
                     />
                     <button type="button" onClick={createCourse}>Create Course</button>
                 </form>
-            )
-            }
+            )}
+            {editCourseId && (
+                <form className="course-form">
+                    {/* Apply custom CSS class */}
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Course Name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                    />
+                    <input
+                        type="text"
+                        name="description"
+                        placeholder="Course Description"
+                        value={formData.description}
+                        onChange={handleInputChange}
+                    />
+                    <button type="button" onClick={editCourse}>Update Course</button>
+                </form>
+            )}
             <table className="course-list"> {/* Apply custom CSS class */}
                 <thead>
                 <tr>
@@ -98,8 +163,9 @@ const ManageCourse = () => {
                         <td>{course.name}</td>
                         <td>{course.description}</td>
                         <td>
-                            {/*<button className="btn btn-primary" onClick={() => editUser(user)}>Edit</button>*/}
-                            {/*<button className="btn btn-danger" onClick={() => deleteUser(user.id)}>Delete</button>*/}
+                            <button className="btn btn-primary" onClick={() => toggleEditForm(course.id)}>Edit</button>
+                            <button className="btn btn-danger" onClick={() => deleteCourse(course.id)}>Delete</button>
+
                         </td>
                     </tr>
                 ))}

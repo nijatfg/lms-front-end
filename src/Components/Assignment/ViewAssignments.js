@@ -27,6 +27,7 @@ const ViewAssignments = () => {
     };
 
     const handleClick = (assignmentId) => {
+        localStorage.setItem("assignmentId", assignmentId);
         navigate(`/task-details/${assignmentId}`);
     };
 
