@@ -59,6 +59,7 @@
 /* Video container styles */
 .video-container {
     margin-top: 40px; /* Increase space between the table and videos */
+    overflow-x: auto; /* Enable horizontal scrolling */
 }
 
 /* Video item styles */
@@ -70,6 +71,7 @@
     border-radius: 8px; /* Rounded corners */
     padding: 10px; /* Padding around video item */
     cursor: pointer;
+    max-width: 100%; /* Adjust as needed */
 }
 
 .video-item:hover {
@@ -93,6 +95,7 @@
 .cld-video-player {
     border-radius: 8px; /* Add border radius to the video player */
     overflow: hidden; /* Hide any overflow content */
+    max-width: 100%;
 }
 
 .cld-video-player:focus {

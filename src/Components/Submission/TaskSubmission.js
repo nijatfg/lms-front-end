@@ -97,7 +97,9 @@ const TaskSubmission = () => {
                                         .map(submission => (
                                             <li key={submission.id}>
                                                 <p>Content: {submission.content}</p>
-                                                <p>Link: {submission.link}</p>
+                                                <p>
+                                                    Link: <a href={submission.link} target="_blank" rel="noopener noreferrer">{submission.link}</a>
+                                                </p>
                                                 <p>User: {submission.user.username}</p>
                                                 <button onClick={() => handleDownload(submission.content)} className="download-button">
                                                     Download
